@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import "./Login.css";
 // import "../App.css";
 import { Navigate, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
@@ -10,7 +9,7 @@ import logo from "../../../assets/images/logo.png";
 const Login = () => {
   const navigate = useNavigate();
 
-  const token = Cookies.get("token");
+  const token = localStorage.getItem("token");
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,8 +26,8 @@ const Login = () => {
         credentials
       );
       console.log(response.data);
-      Cookies.set("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("admin", JSON.stringify(response.data.Admin));
       toast.success(response.data.status, {});
       setTimeout(() => {
         navigate("/");

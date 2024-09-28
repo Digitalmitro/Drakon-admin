@@ -55,10 +55,31 @@ import WidgetsDropdown from '../widgets/WidgetsDropdown'
 import MainChart from './MainChart'
 import { Navigate, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
+import axios from 'axios'
 const Dashboard = () => {
   const navigate = useNavigate()
 
-  const token = Cookies.get('token')
+  const token = localStorage.getItem('token')
+
+  const checkToken = async () => {
+    if(token){
+    await axios
+      .get(`${process.env.REACT_APP_BACKEND_API}/check-admin-token`, {
+        headers: { token: token },
+      })
+      .then((res) => {
+        console.log(`Response --> ${res}`);
+      })
+      .catch((e) => {
+        alert("Admin not valid, logging out...");
+        localStorage.clear();
+        navigate("/login");
+      });
+    }else{
+      console.log("NO ADMIN TOKEN")
+    }
+  };
+
   const progressExample = [
     { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
     { title: 'Unique', value: '24.093 Users', percent: 20, color: 'info' },
@@ -181,7 +202,7 @@ const Dashboard = () => {
   ]
   useEffect(() => {
     if (token) {
-      // Use the <Navigate /> component to redirect
+      checkToken()
     } else {
       return navigate('/Login')
     }
