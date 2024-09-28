@@ -29,8 +29,7 @@ import Cookies from "js-cookie";
 const AppHeaderDropdown = () => {
   const navigate = useNavigate()
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    Cookies.remove("token");
+    localStorage.clear();
     navigate('/Login')
   };
   // const [data,setData]=useState([])
