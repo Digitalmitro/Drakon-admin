@@ -26,8 +26,8 @@ const Login = () => {
         credentials
       );
       console.log(response.data);
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("admin", JSON.stringify(response.data.Admin));
+      localStorage.setItem("token", response.data?.token);
+      localStorage.setItem("admin", JSON.stringify(response.data?.Admin));
       toast.success(response.data.status, {});
       setTimeout(() => {
         navigate("/");

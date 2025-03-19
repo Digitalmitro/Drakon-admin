@@ -46,6 +46,19 @@ let _nav = [
   },
   {
     component: CNavGroup,
+    name: 'Manage Category',
+    icon: <CIcon icon={cibAzureArtifacts} customClassName="nav-icon" />,
+    items: [
+      {
+        component: CNavItem,
+        name: ' All Category',
+        to: '/category-list',
+        icon: <CIcon icon={cibGoogleAnalytics} customClassName="nav-icon" />,
+      },
+    ],
+  },
+  {
+    component: CNavGroup,
     name: 'Manage Products',
     icon: <CIcon icon={cibAzureArtifacts} customClassName="nav-icon" />,
     items: [
