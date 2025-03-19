@@ -1,3 +1,4 @@
+import { element, exact } from 'prop-types'
 import React from 'react'
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -25,50 +26,11 @@ const User = React.lazy(() => import('./views/User/User'))
 const UserList = React.lazy(() => import('./views/User/UserList'))
 // Profile
 const Login = React.lazy(() => import('./views/pages/login/Login'))
-
-// Create Callback
-// const CreateCallback = React.lazy(() => import('./views/Leads_Create/CreateCallback'))
-// const CallBackViewDetails = React.lazy(() => import('./views/Leads_Create/CallbackViewDetails'))
-
-// Create Transfer
-// const createTransfer = React.lazy(() => import('./views/Leads_Create/CreateTransfer'))
-// const TransferViewDetails = React.lazy(() => import('./views/Leads_Create/TransferViewDetails'))
-
-// Create Sales
-// const createSales = React.lazy(() => import('./views/Leads_Create/Create_Sales'))
-// const SaleViewDeails = React.lazy(() => import('./views/Leads_Create/SaleViewDeails'))
-
-// Callback status
-// const callbackStatus = React.lazy(() => import('./views/Leads_Status/Callback_Status'))
-
-// Transfer status
-// const transferStatus = React.lazy(() => import('./views/Leads_Status/Transfer_Status'))
+const category_list = React.lazy(()=> import('./views/pages/category_list'))
+const create_category = React.lazy(()=>import('./views/pages/AddCategory'))
 const CreateEmployeeProfile = React.lazy(
   () => import('./views/CreateEmployeeProfile/CreateEmployeeProfile'),
 )
-const EditUserDetails = React.lazy(() => import('./views/CreateEmployeeProfile/EditEmployee'))
-// Sales status
-// const salesStatus = React.lazy(() => import('./views/Leads_Status/Sales_Status'))
-const EmployeeList = React.lazy(() => import('./views/EmployeeActivities/EmployeeList'))
-const ViewDetails = React.lazy(() => import('./views/EmployeeActivities/ViewProcess'))
-const CallBackViewDetails = React.lazy(() => import('./views/EmployeeActivities/CallBackview'))
-const TransferViewDetails = React.lazy(() => import('./views/EmployeeActivities/Transferview'))
-const SaleViewDetails = React.lazy(() => import('./views/EmployeeActivities/Saleview'))
-const CallBackList = React.lazy(() => import('./views/EmployeeActivities/CallBackList'))
-const SaleList = React.lazy(() => import('./views/EmployeeActivities/SaleList'))
-const TransferList = React.lazy(() => import('./views/EmployeeActivities/TransferList'))
-const AttendaceList = React.lazy(() => import('./views/EmployeeActivities/AttendanceList'))
-const Notification = React.lazy(() => import('./views/EmployeeActivities/Notifications'))
-const NightShiftAttendance = React.lazy(
-  () => import('./views/EmployeeActivities/AttendanceNightShift'),
-)
-const DayShiftAttendance = React.lazy(() => import('./views/EmployeeActivities/AttendanceDayShift'))
-const AttendanceDaily = React.lazy(() => import('./views/EmployeeActivities/AttendanceDaily'))
-const NightShift = React.lazy(() => import('./views/EmployeeActivities/NightShift'))
-const DayShift = React.lazy(() => import('./views/EmployeeActivities/DayShift'))
-const AllCallbacks = React.lazy(() => import('./views/EmployeeActivities/All_Callbacks'))
-const AllSales = React.lazy(() => import('./views/EmployeeActivities/All_Sales'))
-const AllTransfer = React.lazy(() => import('./views/EmployeeActivities/All_Transfer'))
 
 const Best_Purchased_Product = React.lazy(() => import('./views/Purchase/Best_Purchased_Product'))
 const ProductReview = React.lazy(() => import('./views/Product/ProductReview'))
@@ -103,6 +65,8 @@ const routes = [
   { path: '/update-coupon/:id', name: 'Update coupon', element: UpdateCoupon, exact: true },
 
   { path: '/product-list', name: 'Product-List', element: ProductList, exact: true },
+  {path:'/category-list', name:'Category-List', element:category_list, exact:true},
+  {path:'/create-category', name:'Add Category', element:create_category, exact:true},
   { path: '/inventory-list', name: 'Inventory-List', element: InventoryList, exact: true },
   { path: '/featured-list', name: 'Featured-List', element: FeaturedProduct, exact: true },
   { path: '/updatefeatured-list/:id', name: 'Update-Featured-List', element: UpdateFeatured, exact: true },
