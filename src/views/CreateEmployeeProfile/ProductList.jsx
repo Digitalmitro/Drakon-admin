@@ -68,7 +68,7 @@ const ProductList = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products`)
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/feature-products`)
       setData(res.data.reverse())
      
     } catch (error) {

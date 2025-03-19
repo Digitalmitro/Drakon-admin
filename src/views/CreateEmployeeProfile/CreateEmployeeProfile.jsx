@@ -45,7 +45,7 @@ const CreateEmployeeProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_API}/products`, {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_API}/feature-products`, {
         image: fileList.map((file) => file.thumbUrl), // Adjust this according to how your server expects the image data
         ...formData,
       });
