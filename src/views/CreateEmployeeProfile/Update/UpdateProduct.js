@@ -45,7 +45,7 @@ const UpdateProduct = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products/${id}`)
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`)
 
       setFormData({
         title: res.data.title,
@@ -90,7 +90,7 @@ const UpdateProduct = () => {
       }
 
       const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_API}/products/${id}`,
+        `${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`,
         payload,
       )
       console.log(response.data) // Log the response from the server

@@ -79,7 +79,7 @@ const ProductList = () => {
 
   const handleDel = async (id) => {
     try {
-      const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/products/${id}`)
+      const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`)
       console.log(res.data)
       // Update the state after successful deletion
       getData()
