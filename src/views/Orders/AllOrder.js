@@ -14,14 +14,14 @@ const AllOrder = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/order`)
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/api/order/allorder`)
       setData(res.data)
     } catch (error) {
       // Handle error
       console.error('Error fetching data:', error)
     }
   }
-
+  console.log(data)
   // const handleDel = async (id) => {
   //   try {
   //     const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/coupon/${id}`)
@@ -69,7 +69,7 @@ const AllOrder = () => {
             <table className="table">
               <thead>
                 <tr>
-                  <th scope="col">Order</th>
+                  <th scope="col">Order Id</th>
                   <th scope="col"></th>
                   <th scope="col">Date</th>
                   <th scope="col">Status</th>
@@ -80,7 +80,8 @@ const AllOrder = () => {
               <tbody>
                 {data?.map((res) => (
                   <tr key={res._id}>
-                    <td>{res.user}</td>
+                    <td>{res._id
+                    }</td>
                     <td
                       onClick={() => {
                         setModalOpen(true)
@@ -113,11 +114,12 @@ const AllOrder = () => {
                         }}
                       />
                     </td>
-                    <td>{res.createdDate}</td>
+                    <td>{new Date(res.createdAt).toLocaleString()}</td>
                     <td>
                       <Select
-                        className={`order-${res.status}`}
-                        defaultValue={res?.status}
+                        className={`order-${res.
+                          orderStatus}`}
+                        defaultValue={res?.orderStatus}
                         style={{
                           width: 120,
                         }}
@@ -138,8 +140,8 @@ const AllOrder = () => {
                         ]}
                       />
                     </td>
-                    <td>$ {(res.price * res.qty).toFixed(2)}</td>
-                    <td>--</td>
+                    <td>$ {(res.totalAmount).toFixed(2)}</td>
+                    <td>{res.paymentMethod}</td>
                   </tr>
                 ))}
               </tbody>
