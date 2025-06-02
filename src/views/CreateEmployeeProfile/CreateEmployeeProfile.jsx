@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { CCard, CCardHeader, CCardBody } from '@coreui/react';
+import { CCard, CCardHeader, CCardBody,CButton,CForm,CRow,CCol,CFormLabel, CFormInput } from '@coreui/react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -95,132 +95,110 @@ const CreateEmployeeProfile = () => {
   return (
     <>
       <ToastContainer />
-      <CCard className="mb-4">
-        <CCardHeader className='d-flex' style={{justifyContent:'space-between'}}>
-          <motion.h2 className="  fw-bold" style={{ marginBottom: '40px' }}>
-            Add Products{' '}
-          </motion.h2>
-          <button className='btn btn-info text-white' style={{height:"50px"}} onClick={()=>navigate('/product-list')}>Product List</button>
-        </CCardHeader>
-        <CCardBody>
-          <motion.div>
-            <form onSubmit={handleSubmit}>
-              <div className="container">
-                <div className="row">
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Title</label>
-                    <div>
-                      <input
-                        type="text"
-                        required
-                        placeholder="Product Title"
-                        value={formData.title}
-                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Description</label>
-                    <div>
-                      <input
-                        placeholder="Product Description"
-                        type="text"
-                        required
-                        value={formData.description}
-                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Category</label>
-                    <div className="">
-                    <input
-                        placeholder="product category"
-                        type="text"
-                        required
-                        value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                      />
-                      
-                      {/* <select
-                        value={formData.category}
-                        onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                        className='p-1'
-                        required
-                      >
-                        <option value="" disabled className='text-gray-900' style={{color:"gray"}}>Select Category</option>
-                        {categoryOptions.map((category) => (
-                          <option key={category} value={category}>
-                            {category}
-                          </option>
-                        ))}
-                      </select> */}
-                    </div>
-                  </div>
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Price</label>
-                    <div>
-                      <input
-                        placeholder="product price"
-                        type="text"
-                        required
-                        value={formData.price}
-                        onChange={(e) => setFormData({ ...formData, price: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div className="input-group mb-2 mt-4" style={{ gap: '20px' }}>
-                    <label>Product Stock</label>
-                    <div>
-                      <input
-                        placeholder="product stock"
-                        type="number"
-                        required
-                        value={formData.stock}
-                        onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
-                      />
-                    </div>
-                  </div>
-                  <div
-                    className="input-group mb-2 col"
-                    style={{ gap: '20px', alignItems: 'center' }}
-                  >
-                    <label>Product Image</label>
-                    <div className="ms-5">
-                      <Upload
-                        action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                        listType="picture-circle"
-                        fileList={fileList}
-                        onPreview={handlePreview}
-                        onChange={handleChange}
-                      >
-                        {fileList.length >= 8 ? null : uploadButton}
-                      </Upload>
-                      {previewImage && (
-                        <Image
-                          wrapperStyle={{
-                            display: 'none',
-                          }}
-                          preview={{
-                            visible: previewOpen,
-                            onVisibleChange: (visible) => setPreviewOpen(visible),
-                            afterOpenChange: (visible) => !visible && setPreviewImage(''),
-                          }}
-                          src={previewImage}
-                        />
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+      <CCard className="shadow-sm p-3">
+      {/* Card Header */}
+      <CCardHeader className="d-flex justify-content-between bg-primary text-white">
+        <h4 className="fw-bold">Add Product</h4>
+        <CButton color="info" className="text-white" onClick={() => navigate("/product-list")}>
+          Product List
+        </CButton>
+      </CCardHeader>
 
-              <button className="btn btn-dark" type="submit" style={{ marginTop: '20px' }}>
+      {/* Card Body */}
+      <CCardBody >
+        <CForm onSubmit={handleSubmit}>
+          <CRow className="mb-3">
+            {/* Product Title */}
+            <CCol md={6}>
+              <CFormLabel>Product Title</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter product title"
+                required
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              />
+            </CCol>
+
+            {/* Product Category */}
+            <CCol md={6}>
+              <CFormLabel>Category</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter category"
+                required
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              />
+            </CCol>
+          </CRow>
+
+          {/* Product Description */}
+          <CRow className="mb-3">
+            <CCol md={12}>
+              <CFormLabel>Description</CFormLabel>
+              <CFormInput
+                type="text"
+                placeholder="Enter product description"
+                required
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              />
+            </CCol>
+          </CRow>
+
+          <CRow className="mb-3">
+            {/* Product Price */}
+            <CCol md={6}>
+              <CFormLabel>Price</CFormLabel>
+              <CFormInput
+                type="number"
+                placeholder="Enter price"
+                required
+                value={formData.price}
+                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
+              />
+            </CCol>
+
+            {/* Product Stock */}
+            <CCol md={6}>
+              <CFormLabel>Stock</CFormLabel>
+              <CFormInput
+                type="number"
+                placeholder="Enter stock quantity"
+                required
+                value={formData.stock}
+                onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+              />
+            </CCol>
+          </CRow>
+
+          {/* Image Upload */}
+          <CRow className="mb-3">
+            <CCol md={12}>
+              <CFormLabel>Product Image</CFormLabel>
+              <Upload
+                action="https://your-api/upload"
+                listType="picture-card"
+                fileList={fileList}
+                onChange={handleChange}
+              >
+                {fileList.length >= 5 ? null : <CButton color="secondary">Upload</CButton>}
+              </Upload>
+            </CCol>
+          </CRow>
+
+          {/* Buttons */}
+          <CRow className="mt-4">
+            <CCol className="text-center">
+              <CButton type="submit" color="success">
                 Submit
-              </button>
-            </form>
-          </motion.div>
-        </CCardBody>
-      </CCard>
+              </CButton>
+            </CCol>
+          </CRow>
+        </CForm>
+      </CCardBody>
+    </CCard>
     </>
   );
 };
