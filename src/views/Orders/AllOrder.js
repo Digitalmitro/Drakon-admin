@@ -15,7 +15,7 @@ const AllOrder = () => {
   const getData = async () => {
     try {
       const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/api/order/allorder`)
-      setData(res.data)
+      setData(res?.data)
     } catch (error) {
       // Handle error
       console.error('Error fetching data:', error)
@@ -24,8 +24,8 @@ const AllOrder = () => {
   console.log(data)
   // const handleDel = async (id) => {
   //   try {
-  //     const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/coupon/${id}`)
-  //     console.log(res.data)
+  //     const res? = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/coupon/${id}`)
+  //     console.log(res?.data)
   //     // Update the state after successful deletion
   //     getData()
   //     // Notify user
@@ -55,6 +55,9 @@ const AllOrder = () => {
   }
 
   const [modalOpen, setModalOpen] = useState(false)
+
+  console.log(data);
+
   return (
     <>
       <ToastContainer />
@@ -65,7 +68,7 @@ const AllOrder = () => {
           </motion.h2>
         </CCardHeader>
         <CCardBody>
-          <motion.div className="table-responsive">
+          <motion.div className="table-res?ponsive">
             <table className="table">
               <thead>
                 <tr>
@@ -79,8 +82,8 @@ const AllOrder = () => {
               </thead>
               <tbody>
                 {data?.map((res) => (
-                  <tr key={res._id}>
-                    <td>{res._id
+                  <tr key={res?._id}>
+                    <td>{res?._id
                     }</td>
                     <td
                       onClick={() => {
@@ -97,7 +100,7 @@ const AllOrder = () => {
                         xmlns="http://www.w3.org/2000/svg"
                         xmlnsXlink="http://www.w3.org/1999/xlink"
                         viewBox="0 0 512 512"
-                        xmlSpace="preserve"
+                        xmlSpace="pres?erve"
                         fill="#000000"
                         dangerouslySetInnerHTML={{
                           __html: `
@@ -114,16 +117,16 @@ const AllOrder = () => {
                         }}
                       />
                     </td>
-                    <td>{new Date(res.createdAt).toLocaleString()}</td>
+                    <td>{new Date(res?.createdAt).toLocaleString()}</td>
                     <td>
                       <Select
-                        className={`order-${res.
+                        className={`order-${res?.
                           orderStatus}`}
                         defaultValue={res?.orderStatus}
                         style={{
                           width: 120,
                         }}
-                        onChange={(e) => handleChange(e, res._id)}
+                        onChange={(e) => handleChange(e, res?._id)}
                         options={[
                           {
                             value: 'Processing',
@@ -140,8 +143,8 @@ const AllOrder = () => {
                         ]}
                       />
                     </td>
-                    <td>$ {(res.totalAmount).toFixed(2)}</td>
-                    <td>{res.paymentMethod}</td>
+                    <td>$ {(res?.orderTotal).toFixed(2)}</td>
+                    <td>{res?.paymentMethod}</td>
                   </tr>
                 ))}
               </tbody>
@@ -187,30 +190,23 @@ const AllOrder = () => {
         <div className="row">
           <div className="col border me-2 p-2">
             <h4 className="mb-3">Billing Details</h4>
-            <p>
-              {selectedUserData?.billing?.billingfirstName +
-                ' ' +
-                selectedUserData?.billing?.billinglastName}
-            </p>
-            <p>{selectedUserData?.billing?.billingstreetAddress}</p>
-            <p>{selectedUserData?.billing?.billingcity}</p>
-            <p>{selectedUserData?.billing?.billingstate}</p>
-            <p>{selectedUserData?.billing?.billingzipcode}</p>
-            <p>{selectedUserData?.billing?.billingphone}</p>
-            <p>{selectedUserData?.billing?.billingemail}</p>
+            <p>{selectedUserData?.billTo?.fullName}</p>
+            <p>{selectedUserData?.billTo?.address1}</p>
+            <p>{selectedUserData?.billTo?.city}</p>
+            <p>{selectedUserData?.billTo?.state}</p>
+            <p>{selectedUserData?.billTo?.postalCode}</p>
+            <p>{selectedUserData?.billTo?.phone}</p>
+            <p>{selectedUserData?.billTo?.email}</p>
           </div>
           <div className="col border p-2">
             <h4 className="mb-3">Shipping Details</h4>
-            <p>
-              {selectedUserData?.shipping?.shippingfirstName +
-                ' ' +
-                selectedUserData?.shipping?.shippinglastName}
-            </p>
-            <p>{selectedUserData?.shipping?.shippingstreetAddress}</p>
-            <p>{selectedUserData?.shipping?.shippingcity}</p>
-            <p>{selectedUserData?.shipping?.shippingstate}</p>
-            <p>{selectedUserData?.shipping?.shippingzipcode}</p>
-            <p>{selectedUserData?.shipping?.shippingphone}</p>
+            <p>{selectedUserData?.shipTo?.fullName}</p>
+            <p>{selectedUserData?.shipTo?.address1}</p>
+            <p>{selectedUserData?.shipTo?.city}</p>
+            <p>{selectedUserData?.shipTo?.state}</p>
+            <p>{selectedUserData?.shipTo?.postalCode}</p>
+            <p>{selectedUserData?.shipTo?.phone}</p>
+            <p>{selectedUserData?.shipTo?.email}</p>
           </div>
         </div>
         <div className="table-responsive">
@@ -223,12 +219,13 @@ const AllOrder = () => {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{selectedUserData.title}</td>
-                <td>{selectedUserData.qty}</td>
-                <td>$ {(selectedUserData.price * selectedUserData.qty).toFixed(2)}</td>
-                {/* <td>--</td> */}
-              </tr>
+              {selectedUserData?.items?.map((item, index) => (
+                <tr key={index}>
+                  <td>{item.name}</td>
+                  <td>{item.quantity}</td>
+                  <td>$ {(item.unitPrice * item.quantity).toFixed(2)}</td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>

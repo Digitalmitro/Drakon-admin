@@ -8,9 +8,9 @@ import { PlusOutlined } from '@ant-design/icons'
 import { Image, Upload } from 'antd'
 import { useNavigate } from 'react-router-dom'
 const Coupon = () => {
-  const Profile = localStorage.getItem('user')
+  const Profile = localStorage.getItem('admin')
   const NewProfile = JSON.parse(Profile)
-  const user_id = NewProfile._id
+  const user_id = NewProfile?.id
   const navigate = useNavigate()
   const getBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -65,7 +65,7 @@ const Coupon = () => {
     console.log(res.data)
     toast.success(res.data);
   }
-
+  console.log(NewProfile)
   return (
     <>
       <ToastContainer />
@@ -123,17 +123,17 @@ const Coupon = () => {
                       />
                     </div>
                   </div>
-                 
+
                 </div>
                 <div className="input-group  col mt-5" style={{ gap: '20px' }}>
-                    <label>Status</label>
-                    <div className="">
-                      <select value={status} onChange={(e) => setStatus(e.target.value)}>
-                        <option value="Active">Active</option>
-                        <option value="InActive">InActive</option>
-                      </select>
-                    </div>
+                  <label>Status</label>
+                  <div className="">
+                    <select value={status} onChange={(e) => setStatus(e.target.value)}>
+                      <option value="Active">Active</option>
+                      <option value="InActive">InActive</option>
+                    </select>
                   </div>
+                </div>
               </div>
 
               <button className="btn btn-dark" type="submit" style={{ marginTop: '20px' }}>
