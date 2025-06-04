@@ -3,9 +3,7 @@ import { CCard, CCardBody, CHeader } from '@coreui/react'
 import axios from 'axios'
 // import { Button } from '@mui/material'
 import { Button, Modal } from 'antd'
-
 const ManageCustomer = () => {
-  
   const initialData = [
     {
       _id: 0,
@@ -141,7 +139,7 @@ const ManageCustomer = () => {
                   <td>{res.lastActive || "--"}</td>
                   <td>{res.registerDate || "--"}</td>
                   <td>{res.email || "--"}</td>
-                  <td>{res.order.length || "--"}</td>
+                  <td>{res?.order?.length || "--"}</td>
                   <td>
                     <Button
                       onClick={() => {
