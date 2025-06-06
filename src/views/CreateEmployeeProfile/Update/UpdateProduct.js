@@ -7,6 +7,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import { PlusOutlined } from '@ant-design/icons'
 import { Image, Upload } from 'antd'
 import { useNavigate, useParams } from 'react-router-dom'
+import Select from 'react-select';
+
+
 
 const UpdateProduct = () => {
   const { id } = useParams()
@@ -29,8 +32,10 @@ const UpdateProduct = () => {
     title: '',
     description: '',
     category: '',
-    price: '',
-    stock: '',
+    price: 0,
+    stock: 0,
+    size: [],
+    weight: 0,
   })
 
   const handlePreview = async (file) => {
@@ -51,8 +56,10 @@ const UpdateProduct = () => {
         title: res.data.title,
         description: res.data.description,
         category: res.data.category,
-        price: res.data.price,
-        stock: res.data.stock,
+        price: res.data.price || 0,
+        stock: res.data.stock || 0,
+        size: res.data.size || [], // Ensure size is an array
+        weight: res.data.weight || 0,
       })
 
       setData(res.data)
@@ -74,25 +81,30 @@ const UpdateProduct = () => {
     try {
       const payload = {
         // image: fileList.map((file) => file.thumbUrl), // Adjust this according to how your server expects the image data
-      title:  formData.title,
+        title: formData.title,
 
-      price : formData.price,
+        price: formData.price,
 
-      description : formData.description,
+        description: formData.description,
 
-      category : formData.category,
+        category: formData.category,
 
-      stock : formData.stock,
+        stock: formData.stock,
 
+        weight: formData.weight,
+
+        size: formData.size,
       }
       if (fileList.length > 0) {
         payload.image = fileList.map((file) => file.thumbUrl)
       }
+      console.log(payload);
 
       const response = await axios.put(
         `${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`,
         payload,
       )
+
       console.log(response.data) // Log the response from the server
       toast.success('Product created successfully')
       setFormData({
@@ -131,6 +143,17 @@ const UpdateProduct = () => {
     </button>
   )
 
+  const sizeOptions = ["YS", "YM", "YL", "YXL", "XXL", "XL", "L", "M", "S", "XS"].map((size) => ({
+    value: size,
+    label: size,
+  }));
+
+  const defaultSizeValues = sizeOptions.filter(option =>
+    [].includes(option.value)
+  );
+
+
+
   return (
     <>
       <ToastContainer />
@@ -143,68 +166,151 @@ const UpdateProduct = () => {
             <form onSubmit={handleSubmit}>
               <div className="container">
                 <div className="row">
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Title</label>
+
+                  <div className=" mb-4 col-md-6 col-12" style={{ gap: '20px' }}>
+                    <label className='mb-2'>Product Title</label>
                     <div>
                       <input
                         type="text"
                         // required
+                        className="p-1"
                         placeholder="Product Title"
                         value={formData.title}
                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                       />
                     </div>
                   </div>
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Description</label>
+                  <div className=" mb-4 col-md-6 col-12" style={{ gap: '20px' }}>
+                    <label className='mb-2'>Product Description</label>
                     <div>
                       <input
                         placeholder="Product Description"
                         type="text"
                         // required
+                        className="p-1"
                         value={formData.description}
                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                       />
                     </div>
                   </div>
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Category</label>
+                  <div className=" mb-4 col-md-6 col-12" style={{ gap: '20px' }}>
+                    <label className='mb-2'>Product Category</label>
                     <div className="">
                       <input
                         placeholder="product category"
                         type="text"
                         // required
+                        className="p-1"
                         value={formData.category}
                         onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                       />
                     </div>
                   </div>
-                  <div className="input-group mb-2 col" style={{ gap: '20px' }}>
-                    <label>Product Price</label>
+                  <div className=" mb-4 col-md-6 col-12" style={{ gap: '20px' }}>
+                    <label className='mb-2'>Product Price</label>
                     <div>
                       <input
                         placeholder="product price"
                         type="text"
                         // required
+                        className="p-1"
                         value={formData.price}
                         onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                       />
                     </div>
                   </div>
-                  <div className="input-group mb-2 mt-4" style={{ gap: '20px' }}>
-                    <label>Product Stock</label>
+                  <div className=" mb-4 col-md-6 col-12 " style={{ gap: '20px' }}>
+                    <label className='mb-2'>Product Stock</label>
                     <div>
                       <input
                         placeholder="product stock"
                         type="number"
                         // required
+                        className="p-1"
                         value={formData.stock}
                         onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
                       />
                     </div>
                   </div>
+                  <div className=" mb-4 col-md-6 col-12 " style={{ gap: '20px' }}>
+                    <label className='mb-2'>Product Size</label>
+                    <div>
+                      <Select
+                        defaultValue={defaultSizeValues}
+                        isMulti
+                        value={formData.size?.map(size => ({ value: size, label: size }))}
+                        name="sizes"
+                        options={sizeOptions}
+                        styles={{
+
+                          control: (base) => ({
+                            ...base,
+                            backgroundColor: '#212631',
+                            borderColor: '#323a49',
+                            boxShadow: 'none',
+                            '&:hover': {
+                              borderColor: '#323a49',
+                            },
+                          }),
+                          menu: (base) => ({
+                            ...base,
+                            backgroundColor: '#323a49',
+                            color: '#fff',
+
+                          }),
+                          option: (base, state) => ({
+                            ...base,
+                            backgroundColor: state.isSelected ? '#323a49' : '#212631',
+                            color: state.isSelected ? '#fff' : '#aaa',
+                            '&:hover': {
+                              backgroundColor: '#323a49',
+                              color: '#fff',
+                            },
+                          }),
+                          multiValue: (base) => ({
+                            ...base,
+                            backgroundColor: '#5e5cd0',
+                            color: '#fff',
+
+                          }),
+                          multiValueLabel: (base) => ({
+                            ...base,
+                            color: '#fff',
+                          }),
+                          multiValueRemove: (base) => ({
+                            ...base,
+                            color: '#fff',
+                            ':hover': {
+                              backgroundColor: 'transparent',
+                              color: '#aaa',
+                            },
+                          }),
+                        }}
+                        onChange={(selectedOptions) => {
+                          setFormData({ ...formData, size: selectedOptions.map((option) => option.value) })
+                        }
+                        }
+                        placeholder="Select sizes"
+                        className="basic-multi-select "
+                        classNamePrefix="select"
+                      />
+                    </div>
+                  </div>
+                  <div className=" mb-4 col-md-6 col-12 " style={{ gap: '20px' }}>
+                    <label className='mb-2'>Product Weight</label>
+                    <div>
+                      <input
+                        placeholder="product weight"
+                        type="number"
+                        // required
+                        className="p-1"
+                        value={formData.weight}
+                        onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                      />
+                    </div>
+                  </div>
                   <div
-                    className="input-group mb-2 col"
+                    className="input-group mb-2 col-md-6 col-12"
                     style={{ gap: '20px', alignItems: 'center' }}
                   >
                     <label>Product Image</label>
@@ -242,7 +348,7 @@ const UpdateProduct = () => {
             </form>
           </motion.div>
         </CCardBody>
-      </CCard>
+      </CCard >
     </>
   )
 }
