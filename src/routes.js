@@ -4,16 +4,21 @@ import React from 'react'
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
 const Colors = React.lazy(() => import('./views/theme/colors/Colors'))
 const Typography = React.lazy(() => import('./views/theme/typography/Typography'))
-
+const blog = React.lazy(() => import('./views/blogs/CreateBlog'))
+const blog_list = React.lazy(() => import('./views/blogs/AllBlogs'))
 const Coupon = React.lazy(() => import('./views/Coupons/CreateCoupon'))
 const CouponList = React.lazy(() => import('./views/Coupons/CouponList'))
 const ProductList = React.lazy(() => import('./views/CreateEmployeeProfile/ProductList'))
 const FeaturedProduct = React.lazy(() => import('./views/CreateEmployeeProfile/FeaturedList'))
-const UpdateFeatured = React.lazy(() => import('./views/CreateEmployeeProfile/Update/UpdateFeature'))
-const UpdateInventory = React.lazy(() => import('./views/CreateEmployeeProfile/Update/UpdateInventory'))
+const UpdateFeatured = React.lazy(
+  () => import('./views/CreateEmployeeProfile/Update/UpdateFeature'),
+)
+const UpdateInventory = React.lazy(
+  () => import('./views/CreateEmployeeProfile/Update/UpdateInventory'),
+)
 const InventoryList = React.lazy(() => import('./views/CreateEmployeeProfile/InventroyList'))
-const CreateInventory =React.lazy(()=>import("./views/CreateEmployeeProfile/CreateInventory"))
-const CreateFeatured =React.lazy(()=>import("./views/CreateEmployeeProfile/CreateFeatured"))
+const CreateInventory = React.lazy(() => import('./views/CreateEmployeeProfile/CreateInventory'))
+const CreateFeatured = React.lazy(() => import('./views/CreateEmployeeProfile/CreateFeatured'))
 const AllOrder = React.lazy(() => import('./views/Orders/AllOrder'))
 const HomeCms = React.lazy(() => import('./views/CMS/HomeCms'))
 const FooterCms = React.lazy(() => import('./views/CMS/FooterCms'))
@@ -26,8 +31,8 @@ const User = React.lazy(() => import('./views/User/User'))
 const UserList = React.lazy(() => import('./views/User/UserList'))
 // Profile
 const Login = React.lazy(() => import('./views/pages/login/Login'))
-const category_list = React.lazy(()=> import('./views/pages/category_list'))
-const create_category = React.lazy(()=>import('./views/pages/AddCategory'))
+const category_list = React.lazy(() => import('./views/pages/category_list'))
+const create_category = React.lazy(() => import('./views/pages/AddCategory'))
 const CreateEmployeeProfile = React.lazy(
   () => import('./views/CreateEmployeeProfile/CreateEmployeeProfile'),
 )
@@ -61,23 +66,35 @@ const routes = [
   { path: '/footer-cms', name: 'Footer CMS', element: FooterCms, exact: true },
   { path: '/header-cms', name: 'Header CMS', element: HeaderCms, exact: true },
   { path: '/index-cms', name: 'Index CMS', element: IndexCms, exact: true },
+  { path: '/create-blog', name: 'Create Blog', element: blog, exact: true },
+  { path: '/blog-list', name: 'Blog List', element: blog_list, exact: true },
 
   { path: '/update-coupon/:id', name: 'Update coupon', element: UpdateCoupon, exact: true },
 
   { path: '/product-list', name: 'Product-List', element: ProductList, exact: true },
-  {path:'/category-list', name:'Category-List', element:category_list, exact:true},
-  {path:'/create-category', name:'Add Category', element:create_category, exact:true},
+  { path: '/category-list', name: 'Category-List', element: category_list, exact: true },
+  { path: '/create-category', name: 'Add Category', element: create_category, exact: true },
   { path: '/inventory-list', name: 'Inventory-List', element: InventoryList, exact: true },
   { path: '/featured-list', name: 'Featured-List', element: FeaturedProduct, exact: true },
-  { path: '/updatefeatured-list/:id', name: 'Update-Featured-List', element: UpdateFeatured, exact: true },
-  { path: '/updateInventory-list/:id', name: 'Update-Inventory-List', element: UpdateInventory, exact: true },
+  {
+    path: '/updatefeatured-list/:id',
+    name: 'Update-Featured-List',
+    element: UpdateFeatured,
+    exact: true,
+  },
+  {
+    path: '/updateInventory-list/:id',
+    name: 'Update-Inventory-List',
+    element: UpdateInventory,
+    exact: true,
+  },
   { path: '/update-product/:id', name: 'Update product', element: UpdateProduct, exact: true },
   { path: '/order-list', name: 'Order list', element: AllOrder, exact: true },
   { path: '/view-order/:id', name: 'View Order', element: ViewOrder, exact: true },
   { path: '/create-leads-profile', name: 'Products', element: CreateEmployeeProfile, exact: true },
-  { path: '/create-inventory', name: 'Add Inventory', element: CreateInventory , exact: true },
-  { path: '/create-featured', name: 'Add Featured Product', element: CreateFeatured , exact: true },
- 
+  { path: '/create-inventory', name: 'Add Inventory', element: CreateInventory, exact: true },
+  { path: '/create-featured', name: 'Add Featured Product', element: CreateFeatured, exact: true },
+
   {
     path: '/best-purchase-product',
     name: 'Best Selling Product',
