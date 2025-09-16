@@ -95,6 +95,12 @@ let _nav = [
     icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
   },
   {
+    component: CNavItem,
+    name: 'Manage Blogs',
+    to: '/blog-list',
+    icon: <CIcon icon={cilMoney} customClassName="nav-icon" />,
+  },
+  {
     component: CNavGroup,
     name: 'Manage CMS',
     icon: <CIcon icon={cilShieldAlt} customClassName="nav-icon" />,
