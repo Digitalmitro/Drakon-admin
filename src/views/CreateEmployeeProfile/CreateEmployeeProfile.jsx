@@ -34,6 +34,8 @@ const CreateEmployeeProfile = () => {
     size: [],
     weight: 0,
     upc: '',
+    isSoldOut: false,
+    soldOutSizes: [],
   });
 
   const handlePreview = async (file) => {
@@ -64,6 +66,8 @@ const CreateEmployeeProfile = () => {
         size: [],
         weight: 0,
         upc: '',
+        isSoldOut: false,
+        soldOutSizes: [],
       });
       setFileList([]);
     } catch (error) {
@@ -272,6 +276,81 @@ const CreateEmployeeProfile = () => {
                   required
                   value={formData.stock}
                   onChange={(e) => setFormData({ ...formData, stock: e.target.value })}
+                />
+              </CCol>
+            </CRow>
+
+            {/* Sold Out Controls */}
+            <CRow className="mb-3">
+              <CCol md={6}>
+                <div className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="checkbox"
+                    id="isSoldOut"
+                    checked={formData.isSoldOut}
+                    onChange={(e) => setFormData({ ...formData, isSoldOut: e.target.checked })}
+                  />
+                  <label className="form-check-label" htmlFor="isSoldOut">
+                    Mark Entire Product as Sold Out
+                  </label>
+                </div>
+              </CCol>
+              <CCol md={6}>
+                <CFormLabel>Mark Specific Sizes as Sold Out</CFormLabel>
+                <Select
+                  isMulti
+                  name="soldOutSizes"
+                  options={sizeOptions}
+                  value={sizeOptions.filter(option => formData.soldOutSizes.includes(option.value))}
+                  styles={{
+                    control: (base) => ({
+                      ...base,
+                      backgroundColor: '#212631',
+                      borderColor: '#323a49',
+                      boxShadow: 'none',
+                      '&:hover': {
+                        borderColor: '#323a49',
+                      },
+                    }),
+                    menu: (base) => ({
+                      ...base,
+                      backgroundColor: '#323a49',
+                      color: '#fff',
+                    }),
+                    option: (base, state) => ({
+                      ...base,
+                      backgroundColor: state.isSelected ? '#323a49' : '#212631',
+                      color: state.isSelected ? '#fff' : '#aaa',
+                      '&:hover': {
+                        backgroundColor: '#323a49',
+                        color: '#fff',
+                      },
+                    }),
+                    multiValue: (base) => ({
+                      ...base,
+                      backgroundColor: '#dc3545',
+                      color: '#fff',
+                    }),
+                    multiValueLabel: (base) => ({
+                      ...base,
+                      color: '#fff',
+                    }),
+                    multiValueRemove: (base) => ({
+                      ...base,
+                      color: '#fff',
+                      ':hover': {
+                        backgroundColor: 'transparent',
+                        color: '#aaa',
+                      },
+                    }),
+                  }}
+                  onChange={(selectedOptions) => {
+                    setFormData({ ...formData, soldOutSizes: selectedOptions.map((option) => option.value) })
+                  }}
+                  placeholder="Select sold out sizes"
+                  className="basic-multi-select"
+                  classNamePrefix="select"
                 />
               </CCol>
             </CRow>

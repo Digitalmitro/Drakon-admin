@@ -37,6 +37,8 @@ const UpdateProduct = () => {
     size: [],
     weight: 0,
     upc: '',
+    isSoldOut: false,
+    soldOutSizes: [],
   })
 
   const handlePreview = async (file) => {
@@ -62,6 +64,8 @@ const UpdateProduct = () => {
         size: res.data.size || [], // Ensure size is an array
         weight: res.data.weight || 0,
         upc: res.data.upc || '',
+        isSoldOut: res.data.isSoldOut || false,
+        soldOutSizes: res.data.soldOutSizes || [],
       })
 
       setData(res.data)
@@ -320,6 +324,78 @@ const UpdateProduct = () => {
                         className="p-1"
                         value={formData.upc}
                         onChange={(e) => setFormData({ ...formData, upc: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className=" mb-4 col-md-6 col-12 " style={{ gap: '20px' }}>
+                    <label className='mb-2'>Sold Out Status</label>
+                    <div>
+                      <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
+                        <input
+                          type="checkbox"
+                          checked={formData.isSoldOut}
+                          onChange={(e) => setFormData({ ...formData, isSoldOut: e.target.checked })}
+                        />
+                        <span>Mark entire product as sold out</span>
+                      </label>
+                    </div>
+                  </div>
+                  <div className=" mb-4 col-md-6 col-12 " style={{ gap: '20px' }}>
+                    <label className='mb-2'>Sold Out Sizes</label>
+                    <div>
+                      <Select
+                        isMulti
+                        value={formData.soldOutSizes?.map(size => ({ value: size, label: size }))}
+                        name="soldOutSizes"
+                        options={formData.size?.map(size => ({ value: size, label: size }))}
+                        styles={{
+                          control: (base) => ({
+                            ...base,
+                            backgroundColor: '#212631',
+                            borderColor: '#323a49',
+                            boxShadow: 'none',
+                            '&:hover': {
+                              borderColor: '#323a49',
+                            },
+                          }),
+                          menu: (base) => ({
+                            ...base,
+                            backgroundColor: '#323a49',
+                            color: '#fff',
+                          }),
+                          option: (base, state) => ({
+                            ...base,
+                            backgroundColor: state.isSelected ? '#323a49' : '#212631',
+                            color: state.isSelected ? '#fff' : '#aaa',
+                            '&:hover': {
+                              backgroundColor: '#323a49',
+                              color: '#fff',
+                            },
+                          }),
+                          multiValue: (base) => ({
+                            ...base,
+                            backgroundColor: '#dc3545',
+                            color: '#fff',
+                          }),
+                          multiValueLabel: (base) => ({
+                            ...base,
+                            color: '#fff',
+                          }),
+                          multiValueRemove: (base) => ({
+                            ...base,
+                            color: '#fff',
+                            ':hover': {
+                              backgroundColor: 'transparent',
+                              color: '#aaa',
+                            },
+                          }),
+                        }}
+                        onChange={(selectedOptions) => {
+                          setFormData({ ...formData, soldOutSizes: selectedOptions.map((option) => option.value) })
+                        }}
+                        placeholder="Select sizes to mark as sold out"
+                        className="basic-multi-select"
+                        classNamePrefix="select"
                       />
                     </div>
                   </div>
