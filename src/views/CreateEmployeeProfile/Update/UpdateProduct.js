@@ -36,6 +36,7 @@ const UpdateProduct = () => {
     stock: 0,
     size: [],
     weight: 0,
+    upc: '',
   })
 
   const handlePreview = async (file) => {
@@ -60,6 +61,7 @@ const UpdateProduct = () => {
         stock: res.data.stock || 0,
         size: res.data.size || [], // Ensure size is an array
         weight: res.data.weight || 0,
+        upc: res.data.upc || '',
       })
 
       setData(res.data)
@@ -297,15 +299,27 @@ const UpdateProduct = () => {
                     </div>
                   </div>
                   <div className=" mb-4 col-md-6 col-12 " style={{ gap: '20px' }}>
-                    <label className='mb-2'>Product Weight</label>
+                    <label className='mb-2'>Product Weight (oz)</label>
                     <div>
                       <input
-                        placeholder="product weight"
+                        placeholder="product weight in ounces"
                         type="number"
                         // required
                         className="p-1"
                         value={formData.weight}
                         onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                  <div className=" mb-4 col-md-6 col-12 " style={{ gap: '20px' }}>
+                    <label className='mb-2'>UPC Code</label>
+                    <div>
+                      <input
+                        placeholder="Enter UPC code"
+                        type="text"
+                        className="p-1"
+                        value={formData.upc}
+                        onChange={(e) => setFormData({ ...formData, upc: e.target.value })}
                       />
                     </div>
                   </div>

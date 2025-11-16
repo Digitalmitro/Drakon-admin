@@ -33,6 +33,7 @@ const CreateEmployeeProfile = () => {
     stock: 0,
     size: [],
     weight: 0,
+    upc: '',
   });
 
   const handlePreview = async (file) => {
@@ -61,7 +62,8 @@ const CreateEmployeeProfile = () => {
         price: 0,
         stock: 0,
         size: [],
-        weight: 0
+        weight: 0,
+        upc: '',
       });
       setFileList([]);
     } catch (error) {
@@ -224,10 +226,10 @@ const CreateEmployeeProfile = () => {
 
               </CCol>
               <CCol md={6}>
-                <CFormLabel>Weight</CFormLabel>
+                <CFormLabel>Weight (oz)</CFormLabel>
                 <CFormInput
                   type="number"
-                  placeholder="Enter stock quantity"
+                  placeholder="Enter weight in ounces"
                   required
                   value={formData.weight}
                   onChange={(e) => setFormData({ ...formData, weight: e.target.value })}
@@ -236,6 +238,17 @@ const CreateEmployeeProfile = () => {
             </CRow>
 
             <CRow className="mb-3">
+              {/* UPC */}
+              <CCol md={6}>
+                <CFormLabel>UPC Code</CFormLabel>
+                <CFormInput
+                  type="text"
+                  placeholder="Enter UPC code"
+                  value={formData.upc}
+                  onChange={(e) => setFormData({ ...formData, upc: e.target.value })}
+                />
+              </CCol>
+              
               {/* Product Price */}
               <CCol md={6}>
                 <CFormLabel>Price</CFormLabel>
@@ -247,7 +260,9 @@ const CreateEmployeeProfile = () => {
                   onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                 />
               </CCol>
+            </CRow>
 
+            <CRow className="mb-3">
               {/* Product Stock */}
               <CCol md={6}>
                 <CFormLabel>Stock</CFormLabel>
