@@ -96,7 +96,7 @@ const CreateEmployeeProfile = () => {
   //   'Home Appliances',
   //   'Sports',
   // ];
-  const sizeOptions = ["XXL", "XL", "L", "M", "S", "XS"].map((size) => ({
+  const sizeOptions = ["Youth", "Adult", "XXL", "XL", "L", "M", "S", "XS", "YS", "YM", "YL", "YXL"].map((size) => ({
     value: size,
     label: size,
   }));

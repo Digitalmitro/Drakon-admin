@@ -143,7 +143,7 @@ const UpdateProduct = () => {
     </button>
   )
 
-  const sizeOptions = ["YS", "YM", "YL", "YXL", "XXL", "XL", "L", "M", "S", "XS"].map((size) => ({
+  const sizeOptions = ["Youth", "Adult", "YS", "YM", "YL", "YXL", "XXL", "XL", "L", "M", "S", "XS"].map((size) => ({
     value: size,
     label: size,
   }));
