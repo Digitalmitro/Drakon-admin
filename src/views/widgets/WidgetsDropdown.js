@@ -25,9 +25,12 @@ const WidgetsDropdown = (props) => {
   const [transfer, setTransferData] = useState([])
   const Getdata = async () => {
     try {
+      const token = localStorage.getItem('token')
       const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/order`)
       const ress = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products`)
-      const resss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon`)
+      const resss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon`, {
+        headers: { token: token }
+      })
       // const ressss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/allsale`)
       // const resssss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/alltransfer`)
 

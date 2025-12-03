@@ -12,7 +12,10 @@ const CouponList = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon`);
+      const token = localStorage.getItem('token')
+      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon`, {
+        headers: { token: token }
+      });
       setData(res.data);
     } catch (error) {
       // Handle error
