@@ -19,7 +19,7 @@ const {id} = useParams()
 
   async function getOrderDetails() {
     try {
-        const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_API}/specific-order/${id}`)
+        const {data} = await axios.get(`https://api.drakon-sports.com/specific-order/${id}`)
         setOrderDetails(data)
     } catch (error) {
         console.log(error);

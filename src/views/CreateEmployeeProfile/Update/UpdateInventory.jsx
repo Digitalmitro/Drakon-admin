@@ -27,7 +27,7 @@ const UpdateInventory = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/inv-products/${id}`);
+      const res = await axios.get(`https://api.drakon-sports.com/inv-products/${id}`);
       if (res.data) {
         setFormData({
           title: res.data.title,
@@ -85,7 +85,7 @@ const UpdateInventory = () => {
       if (fileList.length > 0) {
         payload.image = fileList.map((file) => file.thumbUrl)
       }
-      const response = await axios.put(`${process.env.REACT_APP_BACKEND_API}/inv-products/${id}`, payload);
+      const response = await axios.put(`https://api.drakon-sports.com/inv-products/${id}`, payload);
       console.log(response.data); // Log the response from the server
       toast.success('Product updated successfully');
       setFormData({

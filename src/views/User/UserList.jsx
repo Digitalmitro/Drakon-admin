@@ -12,7 +12,7 @@ const UserList = () => {
 
   async function getData() {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/getalladmin`)
+      const res = await axios.get(`https://api.drakon-sports.com/getalladmin`)
       setAdminDetails(res.data)
     } catch (error) {
       console.log(error)

@@ -69,7 +69,7 @@ const ManageCustomer = () => {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/getclients`)
+      const { data } = await axios.get(`https://api.drakon-sports.com/getclients`)
       setData(data)
       setFilter(data)
     } catch (error) {
@@ -94,7 +94,7 @@ const ManageCustomer = () => {
 
   async function fetchClient(id) {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/order/${id}`)
+      const { data } = await axios.get(`https://api.drakon-sports.com/order/${id}`)
       setOrderData(data.order)
     } catch (error) {
       console.log(error)

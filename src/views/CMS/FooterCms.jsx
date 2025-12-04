@@ -76,14 +76,14 @@ const FooterCms = () => {
 
   async function modifyFooter() {
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/footer`, {
+      const { data } = await axios.post(`https://api.drakon-sports.com/footer`, {
         features,
         socialLinks,
         category1,
         copyright,
         user_id,
       })
-      const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/logo`, {
+      const res = await axios.post(`https://api.drakon-sports.com/logo`, {
         image: logo,
         user_id,
       })
@@ -97,8 +97,8 @@ const FooterCms = () => {
   const [data, setData] = useState([])
   async function getFooterData() {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/footer`)
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/logo`)
+      const { data } = await axios.get(`https://api.drakon-sports.com/footer`)
+      const res = await axios.get(`https://api.drakon-sports.com/logo`)
       setLogo(res.data[0].image)
       setFeatures({
         feature1: data[0].features.feature1,

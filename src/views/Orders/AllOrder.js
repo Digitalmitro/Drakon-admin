@@ -14,7 +14,7 @@ const AllOrder = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/api/order/allorder`)
+      const res = await axios.get(`https://api.drakon-sports.com/api/order/allorder`)
       setData(res?.data)
     } catch (error) {
       // Handle error
@@ -24,7 +24,7 @@ const AllOrder = () => {
   console.log(data)
   // const handleDel = async (id) => {
   //   try {
-  //     const res? = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/coupon/${id}`)
+  //     const res? = await axios.delete(`https://api.drakon-sports.com/coupon/${id}`)
   //     console.log(res?.data)
   //     // Update the state after successful deletion
   //     getData()
@@ -45,7 +45,7 @@ const AllOrder = () => {
   async function handleChange(status, orderId) {
     console.log('test')
     try {
-      const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/order/${orderId}`, {
+      const res = await axios.put(`https://api.drakon-sports.com/order/${orderId}`, {
         status,
       })
       getData()

@@ -44,7 +44,7 @@ const CreateInventory = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_API}/inv-products`, {
+      const response = await axios.post(`https://api.drakon-sports.com/inv-products`, {
         image: fileList.map((file) => file.thumbUrl), // Adjust this according to how your server expects the image data
         ...formData,
       });

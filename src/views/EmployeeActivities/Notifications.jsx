@@ -17,7 +17,7 @@ const Notification = () => {
 
   // const Getdata = async () => {
   //   const res = await axios.get(
-  //     `${process.env.REACT_APP_BACKEND_API}/notification`
+  //     `https://api.drakon-sports.com/notification`
   //   );
   //   setData(res.data);
   //   setFilteredData(res.data); // Initialize filtered data with all data

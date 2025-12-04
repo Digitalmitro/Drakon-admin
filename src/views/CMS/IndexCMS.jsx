@@ -41,7 +41,7 @@ const IndexCMS = () => {
   }
   async function addIndex() {
     try {
-      const { data } = await axios.post(`${process.env.REACT_APP_BACKEND_API}/index`, {
+      const { data } = await axios.post(`https://api.drakon-sports.com/index`, {
         ...index,
         user_id,
       })

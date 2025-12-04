@@ -11,7 +11,7 @@ const ProductReview = () => {
 
   async function getProducts() {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products`)
+      const { data } = await axios.get(`https://api.drakon-sports.com/products`)
       setProduct(data)
     } catch (error) {
       console.log(error)

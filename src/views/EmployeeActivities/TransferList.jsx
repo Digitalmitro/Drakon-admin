@@ -22,12 +22,12 @@ const TransferList = () => {
   const [data2, setData2] = useState([]);
   const [data3, setData3] = useState([]);
   const Getdata = async () => {
-    // const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/callback-user/${id}`);
+    // const res = await axios.get(`https://api.drakon-sports.com/callback-user/${id}`);
     const ress = await axios.get(
-      `${process.env.REACT_APP_BACKEND_API}/transfer-user/${id}`
+      `https://api.drakon-sports.com/transfer-user/${id}`
     );
-    // const resss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/sale-user/${id}`);
-    // const ressss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/attendance/${id}`);
+    // const resss = await axios.get(`https://api.drakon-sports.com/sale-user/${id}`);
+    // const ressss = await axios.get(`https://api.drakon-sports.com/attendance/${id}`);
     // setData(res.data.callback);
     setData1(ress.data.transfer);
     filterAndSortResults(searchTerm, sortBy, ress.data.transfer);

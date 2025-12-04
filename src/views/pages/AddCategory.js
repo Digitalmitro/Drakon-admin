@@ -48,7 +48,7 @@ const AddCategory = () => {
       formData.append('desktop', categoryData.desktop_image);
       formData.append('mobile', categoryData.mobile_image);
 
-      await axios.post(`${process.env.REACT_APP_BACKEND_API}/api/category`, formData, {
+      await axios.post(`https://api.drakon-sports.com/api/category`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

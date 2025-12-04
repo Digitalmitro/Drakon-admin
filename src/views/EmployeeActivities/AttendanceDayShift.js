@@ -11,7 +11,7 @@ const DayShift = () => {
   const [sortBy, setSortBy] = useState('Date')
   const [searchResults, setSearchResults] = useState([])
   const Getdata = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/alluser`)
+    const res = await axios.get(`https://api.drakon-sports.com/alluser`)
     setData(res.data)
     const filteredData = res.data.filter((e) => e.type === "Day")
     filterAndSortResults(searchTerm, sortBy, filteredData)
@@ -19,7 +19,7 @@ const DayShift = () => {
   console.log(data)
   const handleDel = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_API}/alluser/${id}`)
+      await axios.delete(`https://api.drakon-sports.com/alluser/${id}`)
       Getdata()
     } catch (error) {
       console.log(error)

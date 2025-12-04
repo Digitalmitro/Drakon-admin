@@ -15,7 +15,7 @@ const TransferViewDetails = () => {
   const toggle = () => setIsOpen(!isOpen)
   const [data, setData] = useState({})
   const getData = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/transfer-1/${id}`)
+    const res = await axios.get(`https://api.drakon-sports.com/transfer-1/${id}`)
     setData(res.data)
   }
   console.log(data)

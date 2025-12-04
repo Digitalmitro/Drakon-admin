@@ -45,7 +45,7 @@ const EditUserDetails = () => {
     }
     console.log(payload)
     try {
-      const res = await axios.put(`${process.env.REACT_APP_BACKEND_API}/updateuser`, payload)
+      const res = await axios.put(`https://api.drakon-sports.com/updateuser`, payload)
 
       toast.success(res.data, {})
       setName('')
@@ -61,7 +61,7 @@ const EditUserDetails = () => {
     }
   }
   const getDetails = async () => {
-    const data = await axios.get(`${process.env.REACT_APP_BACKEND_API}/alluser/${id}`)
+    const data = await axios.get(`https://api.drakon-sports.com/alluser/${id}`)
     console.log('testdata', data.data[0])
     setUserData(data.data[0])
   }

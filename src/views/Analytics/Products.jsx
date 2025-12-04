@@ -21,7 +21,7 @@ const Products = () => {
   
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/order`)
+      const res = await axios.get(`https://api.drakon-sports.com/order`)
       setData(res.data)
     } catch (error) {
       // Handle error

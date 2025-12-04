@@ -42,7 +42,7 @@ const AppHeader = () => {
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   const getData = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/message`)
+    const res = await axios.get(`https://api.drakon-sports.com/message`)
     if (res?.data?.length > 0) {
       setTimeout(() => {
         Push.create(` Message from ${res?.data[res?.data?.length - 1]?.name}`, {

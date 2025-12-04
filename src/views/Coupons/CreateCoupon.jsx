@@ -61,7 +61,7 @@ const Coupon = () => {
       status,
       user_id,
     }
-    const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/coupon`, payload)
+    const res = await axios.post(`https://api.drakon-sports.com/coupon`, payload)
     console.log(res.data)
     toast.success(res.data);
   }

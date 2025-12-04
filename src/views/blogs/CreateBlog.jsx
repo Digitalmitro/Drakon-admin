@@ -52,7 +52,7 @@ function CreateBlog() {
       console.log('Submitting blog:', blogData)
 
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_API}/api`,
+        `https://api.drakon-sports.com/api`,
         formDataToSend,
         // ❌ NO headers for FormData
       )

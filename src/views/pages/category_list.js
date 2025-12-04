@@ -21,7 +21,7 @@ const CategoryList = () => {
   // Function to fetch categories
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/api/category`);
+      const res = await axios.get(`https://api.drakon-sports.com/api/category`);
       setData(res.data.reverse());
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -31,7 +31,7 @@ const CategoryList = () => {
   // Handle Category Delete
   const handleDel = async (id) => {
     try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_API}/api/category/${id}`);
+      await axios.delete(`https://api.drakon-sports.com/api/category/${id}`);
       message.error('Category deleted successfully');
       getData();
     } catch (error) {
@@ -57,7 +57,7 @@ const CategoryList = () => {
       });
 
       try {
-        axios.post(`${process.env.REACT_APP_BACKEND_API}/categories/batch`, allData)
+        axios.post(`https://api.drakon-sports.com/categories/batch`, allData)
           .then((res) => {
             message.success(res.data);
             getData();

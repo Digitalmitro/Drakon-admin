@@ -13,7 +13,7 @@ const CouponList = () => {
   const getData = async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon`, {
+      const res = await axios.get(`https://api.drakon-sports.com/coupon`, {
         headers: { token: token }
       });
       setData(res.data);
@@ -25,7 +25,7 @@ const CouponList = () => {
 
   const handleDel = async (id) => {
     try {
-      const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/coupon/${id}`);
+      const res = await axios.delete(`https://api.drakon-sports.com/coupon/${id}`);
       console.log(res.data);
       // Update the state after successful deletion
       getData();

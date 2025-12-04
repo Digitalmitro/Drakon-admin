@@ -64,7 +64,7 @@ const Dashboard = () => {
   const checkToken = async () => {
     if(token){
     await axios
-      .get(`${process.env.REACT_APP_BACKEND_API}/check-admin-token`, {
+      .get(`https://api.drakon-sports.com/check-admin-token`, {
         headers: { token: token },
       })
       .then((res) => {

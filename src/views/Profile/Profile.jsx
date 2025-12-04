@@ -43,7 +43,7 @@ const Profile = () => {
       getBase64(info.file.originFileObj, async (url) => {
         setImageUrl(url)
         try {
-          const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/image`, {
+          const res = await axios.post(`https://api.drakon-sports.com/image`, {
             imageUrl: url,
             user_id,
           })
@@ -77,7 +77,7 @@ const Profile = () => {
   )
   const [imgMain, setImgmain] = useState([])
   const getData = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/image/${user_id}`)
+    const res = await axios.get(`https://api.drakon-sports.com/image/${user_id}`)
     setImgmain(res.data.image)
   }
   console.log(imgMain)

@@ -34,7 +34,7 @@ const InventoryList = () => {
 
         // Send allData in a single POST request
         try {
-            axios.post(`${process.env.REACT_APP_BACKEND_API}/products/batch`, allData)
+            axios.post(`https://api.drakon-sports.com/products/batch`, allData)
                 .then((res) => {
                     message.success(res.data);
                     getData(); // Assuming this function gets data from somewhere
@@ -65,7 +65,7 @@ const InventoryList = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/inv-products`)
+      const res = await axios.get(`https://api.drakon-sports.com/inv-products`)
       setData(res.data.reverse())
     
     } catch (error) {
@@ -76,7 +76,7 @@ const InventoryList = () => {
 
   const handleDel = async (id) => {
     try {
-      const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/inv-products/${id}`)
+      const res = await axios.delete(`https://api.drakon-sports.com/inv-products/${id}`)
       console.log(res.data)
       // Update the state after successful deletion
       getData()

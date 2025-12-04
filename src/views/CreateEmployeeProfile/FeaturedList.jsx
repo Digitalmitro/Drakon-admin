@@ -32,7 +32,7 @@ const FeaturedProduct = () => {
 
         // Send allData in a single POST request
         try {
-            axios.post(`${process.env.REACT_APP_BACKEND_API}/products/batch`, allData)
+            axios.post(`https://api.drakon-sports.com/products/batch`, allData)
                 .then((res) => {
                     message.success(res.data);
                     getData(); // Assuming this function gets data from somewhere
@@ -63,7 +63,7 @@ const FeaturedProduct = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/feature-products`)
+      const res = await axios.get(`https://api.drakon-sports.com/feature-products`)
       setData(res.data.reverse())
      
 
@@ -75,7 +75,7 @@ const FeaturedProduct = () => {
 
   const handleDel = async (id) => {
     try {
-      const res = await axios.delete(`${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`)
+      const res = await axios.delete(`https://api.drakon-sports.com/feature-products/${id}`)
       console.log(res.data)
       // Update the state after successful deletion
       getData()

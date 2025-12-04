@@ -236,7 +236,7 @@ const handelEcomMail = async (clientName, userName, clientEmail) => {
     };
     
     // Assuming you have a local server running to handle sending emails
-    const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/send-email`, setMail);
+    const res = await axios.post(`https://api.drakon-sports.com/send-email`, setMail);
   } catch (error) {
     console.error(error);
   }

@@ -12,7 +12,7 @@ function AllBlogs() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/api`)
+        const res = await axios.get(`https://api.drakon-sports.com/api`)
         console.log(res.data)
         setBlogs(res.data)
       } catch (err) {
@@ -30,7 +30,7 @@ function AllBlogs() {
     if (!window.confirm('Are you sure you want to delete this blog?')) return
 
     try {
-      await axios.delete(`${process.env.REACT_APP_BACKEND_API}/api/${id}`)
+      await axios.delete(`https://api.drakon-sports.com/api/${id}`)
       setBlogs(blogs.filter((blog) => blog._id !== id))
     } catch (err) {
       console.error(err)

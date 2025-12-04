@@ -27,7 +27,7 @@ const UpdateCoupon = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon/${id}`);
+      const res = await axios.get(`https://api.drakon-sports.com/coupon/${id}`);
       setFormData({
         couponName: res.data.couponName,
         discount: res.data.discount,
@@ -55,7 +55,7 @@ const UpdateCoupon = () => {
         status: formData.status,
         expiryDate: formData.expiryDate,
       };
-      const response = await axios.put(`${process.env.REACT_APP_BACKEND_API}/coupon/${id}`, payload);
+      const response = await axios.put(`https://api.drakon-sports.com/coupon/${id}`, payload);
       console.log(response.data); // Log the response from the server
       toast.success('Coupon updated successfully');
       setFormData({

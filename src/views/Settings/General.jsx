@@ -31,7 +31,7 @@ const General = () => {
       Currency,
       user_id,
     }
-    const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/general-settings`, payload)
+    const res = await axios.post(`https://api.drakon-sports.com/general-settings`, payload)
     message.success(res.data.message)
   }
 

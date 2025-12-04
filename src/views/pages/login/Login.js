@@ -22,7 +22,7 @@ const Login = () => {
     };
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_API}/loginadmin`,
+        `https://api.drakon-sports.com/loginadmin`,
         credentials
       );
       console.log(response.data);

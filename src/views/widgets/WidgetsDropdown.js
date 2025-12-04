@@ -26,13 +26,13 @@ const WidgetsDropdown = (props) => {
   const Getdata = async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/order`)
-      const ress = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products`)
-      const resss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon`, {
+      const res = await axios.get(`https://api.drakon-sports.com/order`)
+      const ress = await axios.get(`https://api.drakon-sports.com/products`)
+      const resss = await axios.get(`https://api.drakon-sports.com/coupon`, {
         headers: { token: token },
       })
-      // const ressss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/allsale`)
-      // const resssss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/alltransfer`)
+      // const ressss = await axios.get(`https://api.drakon-sports.com/allsale`)
+      // const resssss = await axios.get(`https://api.drakon-sports.com/alltransfer`)
 
       setSalesData(res.data) // get sales data
       setProductData(ress.data) // get products data

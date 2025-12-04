@@ -53,7 +53,7 @@ const UpdateProduct = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`)
+      const res = await axios.get(`https://api.drakon-sports.com/feature-products/${id}`)
 
       setFormData({
         title: res.data.title,
@@ -107,7 +107,7 @@ const UpdateProduct = () => {
       console.log(payload);
 
       const response = await axios.put(
-        `${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`,
+        `https://api.drakon-sports.com/feature-products/${id}`,
         payload,
       )
 

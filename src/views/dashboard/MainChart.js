@@ -11,7 +11,7 @@ const MainChart = () => {
   
   const getData = async () => {
     try {
-      const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products`)
+      const res = await axios.get(`https://api.drakon-sports.com/products`)
       setData(res.data)
     } catch (error) {
       // Handle error

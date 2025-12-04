@@ -33,7 +33,7 @@ const Best_Purchased_Product = () => {
 
   async function getOrders() {
     try {
-      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/order`)
+      const { data } = await axios.get(`https://api.drakon-sports.com/order`)
 
       // Create a map to store the count of each _id
       const idCountMap = new Map()

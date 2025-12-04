@@ -23,7 +23,7 @@ const AttendaceDaily = () => {
   const [data3, setData3] = useState([])
   // console.log(process.env.REACT_APP_BACKEND_API)
   const Getdata = async () => {
-    const ressss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/attendance`)
+    const ressss = await axios.get(`https://api.drakon-sports.com/attendance`)
 
     setData3(ressss.data)
 

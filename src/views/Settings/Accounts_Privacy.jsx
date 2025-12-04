@@ -26,7 +26,7 @@ const Accounts_Privacy = () => {
     };
     console.log(payload);
     try {
-      const res = await axios.post(`${process.env.REACT_APP_BACKEND_API}/general-settings`, payload);
+      const res = await axios.post(`https://api.drakon-sports.com/general-settings`, payload);
       message.success(res.data.message);
     } catch (error) {
       console.error('Error saving payment settings:', error);

@@ -15,7 +15,7 @@ const SaleViewDetails = () => {
   const toggle = () => setIsOpen(!isOpen)
   const [data, setData] = useState({})
   const getData = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/sale-1/${id}`)
+    const res = await axios.get(`https://api.drakon-sports.com/sale-1/${id}`)
     setData(res.data)
   }
   console.log(data)
