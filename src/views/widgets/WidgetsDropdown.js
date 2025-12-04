@@ -29,7 +29,7 @@ const WidgetsDropdown = (props) => {
       const res = await axios.get(`${process.env.REACT_APP_BACKEND_API}/order`)
       const ress = await axios.get(`${process.env.REACT_APP_BACKEND_API}/products`)
       const resss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/coupon`, {
-        headers: { token: token }
+        headers: { token: token },
       })
       // const ressss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/allsale`)
       // const resssss = await axios.get(`${process.env.REACT_APP_BACKEND_API}/alltransfer`)
@@ -46,7 +46,6 @@ const WidgetsDropdown = (props) => {
     }
   }
 
-  console.log(salesData)
   useEffect(() => {
     Getdata()
     document.documentElement.addEventListener('ColorSchemeChange', () => {
@@ -66,8 +65,17 @@ const WidgetsDropdown = (props) => {
     })
   }, [widgetChartRef1, widgetChartRef2])
 
-  const totalStock = productData.reduce((acc, curr) => acc + curr.stock, 0)
-  const totalRevenue = salesData.reduce((acc, curr) => acc + curr.price * curr.qty, 0)
+  const totalStock = Array.isArray(productData)
+    ? productData.reduce((acc, curr) => acc + (curr?.stock || 0), 0)
+    : 0
+
+  const totalRevenue = Array.isArray(salesData)
+    ? salesData.reduce(
+        (acc, curr) => acc + (Number(curr?.price) || 0) * (Number(curr?.qty) || 0),
+        0,
+      )
+    : 0
+
   console.log(totalRevenue)
   const navigate = useNavigate()
   return (
