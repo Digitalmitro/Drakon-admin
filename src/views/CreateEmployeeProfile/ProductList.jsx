@@ -93,6 +93,20 @@ const ProductList = () => {
     }
   }
 
+  const handleSoldOutToggle = async (id, currentStatus) => {
+    try {
+      const newStatus = !currentStatus
+      await axios.put(`${process.env.REACT_APP_BACKEND_API}/feature-products/${id}`, {
+        isSoldOut: newStatus
+      })
+      getData()
+      message.success(newStatus ? 'Product marked as sold out' : 'Product marked as available')
+    } catch (error) {
+      console.error('Error updating sold out status:', error)
+      message.error('Error updating product status')
+    }
+  }
+
   useEffect(() => {
     getData()
   }, [])
@@ -157,6 +171,7 @@ const ProductList = () => {
                   <th scope="col">Product Price</th>
                   <th scope="col">Stock</th>
                   <th scope="col">Category</th>
+                  <th scope="col">Status</th>
                   <th scope="col">Action</th>
                 </tr>
               </thead>
@@ -176,15 +191,27 @@ const ProductList = () => {
                     <td>
                       <p>{res.category}</p>
                     </td>
-                    <td className="d-flex">
-                      <button className="btn btn-danger" onClick={() => handleDel(res._id)}>
-                        Remove
+                    <td>
+                      <span className={`badge ${res.isSoldOut ? 'bg-danger' : 'bg-success'}`}>
+                        {res.isSoldOut ? 'SOLD OUT' : 'Available'}
+                      </span>
+                    </td>
+                    <td className="d-flex" style={{ gap: '8px' }}>
+                      <button 
+                        className={`btn ${res.isSoldOut ? 'btn-success' : 'btn-warning'}`}
+                        onClick={() => handleSoldOutToggle(res._id, res.isSoldOut)}
+                        title={res.isSoldOut ? 'Mark as Available' : 'Mark as Sold Out'}
+                      >
+                        {res.isSoldOut ? 'Mark as Available' : 'Mark as Sold Out'}
                       </button>
                       <button
                         onClick={() => navigate(`/update-product/${res._id}`)}
-                        className="btn btn-dark ms-4"
+                        className="btn btn-dark"
                       >
                         Edit
+                      </button>
+                      <button className="btn btn-danger" onClick={() => handleDel(res._id)}>
+                        Delete
                       </button>
                     </td>
                   </tr>
