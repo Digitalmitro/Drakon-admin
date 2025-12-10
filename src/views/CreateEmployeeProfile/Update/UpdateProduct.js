@@ -100,6 +100,12 @@ const UpdateProduct = () => {
         weight: formData.weight,
 
         size: formData.size,
+
+        upc: formData.upc,
+
+        isSoldOut: formData.isSoldOut,
+
+        soldOutSizes: formData.soldOutSizes,
       }
       if (fileList.length > 0) {
         payload.image = fileList.map((file) => file.thumbUrl)
