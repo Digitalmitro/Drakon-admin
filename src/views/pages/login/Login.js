@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import logo from "../../../assets/images/logo.png";
+import API_BASE_URL from '../../../config/api';
 const Login = () => {
   const navigate = useNavigate();
 
@@ -22,7 +23,7 @@ const Login = () => {
     };
     try {
       const response = await axios.post(
-        `https://api.drakon-sports.com/loginadmin`,
+        `${API_BASE_URL}/loginadmin`,
         credentials
       );
       console.log(response.data);

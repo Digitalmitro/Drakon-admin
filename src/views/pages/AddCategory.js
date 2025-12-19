@@ -4,6 +4,7 @@ import { message } from 'antd';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import API_BASE_URL from '../../config/api';
 
 const AddCategory = () => {
   const navigate = useNavigate();
@@ -48,7 +49,7 @@ const AddCategory = () => {
       formData.append('desktop', categoryData.desktop_image);
       formData.append('mobile', categoryData.mobile_image);
 
-      await axios.post(`https://api.drakon-sports.com/api/category`, formData, {
+      await axios.post(`${API_BASE_URL}/api/category`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 

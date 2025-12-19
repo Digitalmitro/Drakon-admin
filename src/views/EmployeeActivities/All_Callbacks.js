@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useParams } from 'react-router-dom'
+import API_BASE_URL from '../../config/api';
 const AllCallbacks = () => {
   const { id } = useParams()
   console.log(id)
@@ -22,10 +23,10 @@ const AllCallbacks = () => {
   const [sortBy, setSortBy] = useState('Date')
   const [searchResults, setSearchResults] = useState([])
   const Getdata = async () => {
-    const res = await axios.get(`https://api.drakon-sports.com/allcallback`)
-    // const ress = await axios.get(`https://api.drakon-sports.com/transfer-user/${id}`);
-    // const resss = await axios.get(`https://api.drakon-sports.com/sale-user/${id}`);
-    // const ressss = await axios.get(`https://api.drakon-sports.com/attendance/${id}`);
+    const res = await axios.get(`${API_BASE_URL}/allcallback`)
+    // const ress = await axios.get(`${API_BASE_URL}/transfer-user/${id}`);
+    // const resss = await axios.get(`${API_BASE_URL}/sale-user/${id}`);
+    // const ressss = await axios.get(`${API_BASE_URL}/attendance/${id}`);
     console.log('data', res.data)
     setData(res.data)
     filterAndSortResults(searchTerm, sortBy, res.data)

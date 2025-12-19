@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PlusOutlined } from '@ant-design/icons';
 import { Upload } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
+import API_BASE_URL from '../../config/api';
 
 const UpdateCoupon = () => {
   const { id } = useParams();
@@ -27,7 +28,7 @@ const UpdateCoupon = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`https://api.drakon-sports.com/coupon/${id}`);
+      const res = await axios.get(`${API_BASE_URL}/coupon/${id}`);
       setFormData({
         couponName: res.data.couponName,
         discount: res.data.discount,
@@ -55,7 +56,7 @@ const UpdateCoupon = () => {
         status: formData.status,
         expiryDate: formData.expiryDate,
       };
-      const response = await axios.put(`https://api.drakon-sports.com/coupon/${id}`, payload);
+      const response = await axios.put(`${API_BASE_URL}/coupon/${id}`, payload);
       console.log(response.data); // Log the response from the server
       toast.success('Coupon updated successfully');
       setFormData({

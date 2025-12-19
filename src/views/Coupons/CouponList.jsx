@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import API_BASE_URL from '../../config/api';
 
 const CouponList = () => {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ const CouponList = () => {
   const getData = async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`https://api.drakon-sports.com/coupon`, {
+      const res = await axios.get(`${API_BASE_URL}/coupon`, {
         headers: { token: token }
       });
       setData(res.data);
@@ -25,7 +26,7 @@ const CouponList = () => {
 
   const handleDel = async (id) => {
     try {
-      const res = await axios.delete(`https://api.drakon-sports.com/coupon/${id}`);
+      const res = await axios.delete(`${API_BASE_URL}/coupon/${id}`);
       console.log(res.data);
       // Update the state after successful deletion
       getData();

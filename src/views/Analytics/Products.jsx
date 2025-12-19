@@ -13,6 +13,7 @@ import { CChartLine } from '@coreui/react-chartjs'
 import { Button, styled } from '@mui/material'
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload'
 import axios from 'axios'
+import API_BASE_URL from '../../config/api'
 
 const Products = () => {
   const random = () => Math.round(Math.random() * 100)
@@ -21,7 +22,7 @@ const Products = () => {
   
   const getData = async () => {
     try {
-      const res = await axios.get(`https://api.drakon-sports.com/order`)
+      const res = await axios.get(`${API_BASE_URL}/order`)
       setData(res.data)
     } catch (error) {
       // Handle error

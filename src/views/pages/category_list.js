@@ -10,6 +10,7 @@ import { Button } from '@mui/material';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { styled } from '@mui/material/styles';
 import * as XLSX from 'xlsx';
+import API_BASE_URL from '../../config/api';
 
 const CategoryList = () => {
   const [data, setData] = useState([]);
@@ -21,7 +22,7 @@ const CategoryList = () => {
   // Function to fetch categories
   const getData = async () => {
     try {
-      const res = await axios.get(`https://api.drakon-sports.com/api/category`);
+      const res = await axios.get(`${API_BASE_URL}/api/category`);
       setData(res.data.reverse());
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -31,7 +32,7 @@ const CategoryList = () => {
   // Handle Category Delete
   const handleDel = async (id) => {
     try {
-      await axios.delete(`https://api.drakon-sports.com/api/category/${id}`);
+      await axios.delete(`${API_BASE_URL}/api/category/${id}`);
       message.error('Category deleted successfully');
       getData();
     } catch (error) {
@@ -57,7 +58,7 @@ const CategoryList = () => {
       });
 
       try {
-        axios.post(`https://api.drakon-sports.com/categories/batch`, allData)
+        axios.post(`${API_BASE_URL}/categories/batch`, allData)
           .then((res) => {
             message.success(res.data);
             getData();

@@ -5,13 +5,14 @@ import { getStyle } from '@coreui/utils'
 import { Navigate,useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import axios from 'axios';
+import API_BASE_URL from '../../config/api';
 const MainChart = () => {
   const [data, setData] = useState([])
 
   
   const getData = async () => {
     try {
-      const res = await axios.get(`https://api.drakon-sports.com/products`)
+      const res = await axios.get(`${API_BASE_URL}/products`)
       setData(res.data)
     } catch (error) {
       // Handle error

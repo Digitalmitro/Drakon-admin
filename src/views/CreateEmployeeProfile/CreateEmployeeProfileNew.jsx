@@ -7,7 +7,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
 import API_BASE_URL from '../../config/api';
 
 const CreateEmployeeProfile = () => {
@@ -38,13 +37,7 @@ const CreateEmployeeProfile = () => {
     soldOutSizes: [],
   });
 
-  const [newSize, setNewSize] = useState({ size: '', upc: '' });
-  
-  // Predefined size options
-  const sizeOptions = ["Youth", "Adult", "YS", "YM", "YL", "YXL", "XXL", "XL", "L", "M", "S", "XS"].map((size) => ({
-    value: size,
-    label: size,
-  }));
+  const [newSize, setNewSize] = useState({ size: '', upc: '', weight: 0 });
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -56,35 +49,16 @@ const CreateEmployeeProfile = () => {
 
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
-  // Add size from dropdown selection
-  const addSizesFromDropdown = (selectedOptions) => {
-    if (!selectedOptions || selectedOptions.length === 0) return;
-    
-    const newSizes = selectedOptions.map(option => ({
-      size: option.value,
-      upc: ''
-    }));
-    
-    // Filter out duplicates
-    const existingSizeNames = formData.size.map(s => s.size);
-    const uniqueNewSizes = newSizes.filter(ns => !existingSizeNames.includes(ns.size));
-    
-    setFormData({
-      ...formData,
-      size: [...formData.size, ...uniqueNewSizes]
-    });
-  };
-
   const addSize = () => {
-    if (!newSize.size) {
-      toast.error('Please enter size name');
+    if (!newSize.size || newSize.weight <= 0) {
+      toast.error('Please enter size name and weight');
       return;
     }
     setFormData({
       ...formData,
       size: [...formData.size, { ...newSize }]
     });
-    setNewSize({ size: '', upc: '' });
+    setNewSize({ size: '', upc: '', weight: 0 });
   };
 
   const removeSize = (index) => {
@@ -109,7 +83,7 @@ const CreateEmployeeProfile = () => {
         ...formData,
       };
 
-      // const response = await axios.post(`https://api.drakon-sports.com/feature-products`, payload);
+    //   const response = await axios.post(`https://api.drakon-sports.com/feature-products`, payload);
       const response = await axios.post(`${API_BASE_URL}/feature-products`, payload);
       console.log(response.data);
       toast.success('Product created successfully');
@@ -241,7 +215,7 @@ const CreateEmployeeProfile = () => {
               </CCol>
             </CRow>
 
-            {/* If hasNoSize - show simple UPC */}
+            {/* If hasNoSize - show simple UPC and Weight */}
             {formData.hasNoSize ? (
               <CRow className="mb-4">
                 <CCol md={6}>
@@ -253,77 +227,71 @@ const CreateEmployeeProfile = () => {
                     onChange={(e) => setFormData({ ...formData, upc: e.target.value })}
                   />
                 </CCol>
+                <CCol md={6}>
+                  <CFormLabel>Weight (oz)</CFormLabel>
+                  <CFormInput
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter weight in ounces"
+                    required
+                    value={formData.weight}
+                    onChange={(e) => setFormData({ ...formData, weight: parseFloat(e.target.value) })}
+                  />
+                </CCol>
               </CRow>
             ) : (
               <>
-                {/* Size Dropdown - Select Multiple Sizes */}
-                <CRow className="mb-4">
+                {/* Size Management */}
+                <CRow className="mb-3">
                   <CCol md={12}>
-                    <CFormLabel>Available Sizes (Select from dropdown)</CFormLabel>
-                    <Select
-                      isMulti
-                      name="sizes"
-                      options={sizeOptions}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          backgroundColor: '#212631',
-                          borderColor: '#323a49',
-                          boxShadow: 'none',
-                          '&:hover': {
-                            borderColor: '#323a49',
-                          },
-                        }),
-                        menu: (base) => ({
-                          ...base,
-                          backgroundColor: '#323a49',
-                          color: '#fff',
-                        }),
-                        option: (base, state) => ({
-                          ...base,
-                          backgroundColor: state.isSelected ? '#323a49' : '#212631',
-                          color: state.isSelected ? '#fff' : '#aaa',
-                          '&:hover': {
-                            backgroundColor: '#323a49',
-                            color: '#fff',
-                          },
-                        }),
-                        multiValue: (base) => ({
-                          ...base,
-                          backgroundColor: '#5e5cd0',
-                          color: '#fff',
-                        }),
-                        multiValueLabel: (base) => ({
-                          ...base,
-                          color: '#fff',
-                        }),
-                        multiValueRemove: (base) => ({
-                          ...base,
-                          color: '#fff',
-                          ':hover': {
-                            backgroundColor: 'transparent',
-                            color: '#aaa',
-                          },
-                        }),
-                      }}
-                      onChange={addSizesFromDropdown}
-                      placeholder="Select sizes to add"
-                      className="basic-multi-select"
-                      classNamePrefix="select"
-                    />
+                    <h5>Add Sizes with UPC and Weight</h5>
                   </CCol>
                 </CRow>
 
-                {/* Display Added Sizes (Editable) */}
+                <CRow className="mb-3">
+                  <CCol md={4}>
+                    <CFormLabel>Size</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      placeholder="e.g., YS, YM, Adult"
+                      value={newSize.size}
+                      onChange={(e) => setNewSize({ ...newSize, size: e.target.value })}
+                    />
+                  </CCol>
+                  <CCol md={4}>
+                    <CFormLabel>UPC Code</CFormLabel>
+                    <CFormInput
+                      type="text"
+                      placeholder="Enter UPC"
+                      value={newSize.upc}
+                      onChange={(e) => setNewSize({ ...newSize, upc: e.target.value })}
+                    />
+                  </CCol>
+                  <CCol md={3}>
+                    <CFormLabel>Weight (oz)</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      step="0.01"
+                      placeholder="Weight"
+                      value={newSize.weight}
+                      onChange={(e) => setNewSize({ ...newSize, weight: parseFloat(e.target.value) || 0 })}
+                    />
+                  </CCol>
+                  <CCol md={1} className="d-flex align-items-end">
+                    <CButton color="primary" onClick={addSize}>Add</CButton>
+                  </CCol>
+                </CRow>
+
+                {/* Display Added Sizes */}
                 {formData.size.length > 0 && (
                   <CRow className="mb-4">
                     <CCol md={12}>
-                      <h5>Added Sizes (Edit UPC)</h5>
                       <CTable striped hover>
                         <CTableHead>
                           <CTableRow>
                             <CTableHeaderCell>Size</CTableHeaderCell>
                             <CTableHeaderCell>UPC</CTableHeaderCell>
+                            <CTableHeaderCell>Weight (oz)</CTableHeaderCell>
                             <CTableHeaderCell>Action</CTableHeaderCell>
                           </CTableRow>
                         </CTableHead>
@@ -331,20 +299,8 @@ const CreateEmployeeProfile = () => {
                           {formData.size.map((s, index) => (
                             <CTableRow key={index}>
                               <CTableDataCell>{s.size}</CTableDataCell>
-                              <CTableDataCell>
-                                <CFormInput
-                                  type="text"
-                                  value={s.upc || ''}
-                                  onChange={(e) => {
-                                    const updatedSizes = formData.size.map((item, i) =>
-                                      i === index ? { ...item, upc: e.target.value } : item
-                                    );
-                                    setFormData({ ...formData, size: updatedSizes });
-                                  }}
-                                  placeholder="Enter UPC"
-                                  style={{ width: '150px' }}
-                                />
-                              </CTableDataCell>
+                              <CTableDataCell>{s.upc || '-'}</CTableDataCell>
+                              <CTableDataCell>{s.weight}</CTableDataCell>
                               <CTableDataCell>
                                 <CButton color="danger" size="sm" onClick={() => removeSize(index)}>
                                   Remove
@@ -357,37 +313,6 @@ const CreateEmployeeProfile = () => {
                     </CCol>
                   </CRow>
                 )}
-
-                {/* Size Management */}
-                <CRow className="mb-3">
-                  <CCol md={12}>
-                    <h5>Or Add Custom Size</h5>
-                  </CCol>
-                </CRow>
-
-                <CRow className="mb-3">
-                  <CCol md={5}>
-                    <CFormLabel>Size</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      placeholder="e.g., YS, YM, Adult"
-                      value={newSize.size}
-                      onChange={(e) => setNewSize({ ...newSize, size: e.target.value })}
-                    />
-                  </CCol>
-                  <CCol md={5}>
-                    <CFormLabel>UPC Code</CFormLabel>
-                    <CFormInput
-                      type="text"
-                      placeholder="Enter UPC"
-                      value={newSize.upc}
-                      onChange={(e) => setNewSize({ ...newSize, upc: e.target.value })}
-                    />
-                  </CCol>
-                  <CCol md={2} className="d-flex align-items-end">
-                    <CButton color="primary" onClick={addSize}>Add</CButton>
-                  </CCol>
-                </CRow>
               </>
             )}
 

@@ -6,6 +6,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 import { Modal, Select } from 'antd'
+import API_BASE_URL from '../../config/api';
 
 const AllOrder = () => {
   const navigate = useNavigate()
@@ -14,7 +15,7 @@ const AllOrder = () => {
 
   const getData = async () => {
     try {
-      const res = await axios.get(`https://api.drakon-sports.com/api/order/allorder`)
+      const res = await axios.get(`${API_BASE_URL}/api/order/allorder`)
       setData(res?.data)
     } catch (error) {
       // Handle error
@@ -45,7 +46,7 @@ const AllOrder = () => {
   async function handleChange(status, orderId) {
     console.log('test')
     try {
-      const res = await axios.put(`https://api.drakon-sports.com/order/${orderId}`, {
+      const res = await axios.put(`${API_BASE_URL}/order/${orderId}`, {
         status,
       })
       getData()

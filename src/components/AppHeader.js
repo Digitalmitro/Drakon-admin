@@ -32,6 +32,7 @@ import { AppHeaderDropdown } from './header/index'
 import axios from 'axios'
 import Push from 'push.js'
 import logo from '../assets/images/logo.png'
+import API_BASE_URL from '../config/api';
 
 const AppHeader = () => {
   const navigate = useNavigate()
@@ -42,7 +43,7 @@ const AppHeader = () => {
   const sidebarShow = useSelector((state) => state.sidebarShow)
 
   const getData = async () => {
-    const res = await axios.get(`https://api.drakon-sports.com/message`)
+    const res = await axios.get(`${API_BASE_URL}/message`)
     if (res?.data?.length > 0) {
       setTimeout(() => {
         Push.create(` Message from ${res?.data[res?.data?.length - 1]?.name}`, {

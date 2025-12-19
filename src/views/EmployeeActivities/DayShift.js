@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { CCard, CCardHeader, CCardBody } from '@coreui/react'
 import { useNavigate } from 'react-router-dom'
+import API_BASE_URL from '../../config/api';
 const AttendanceDayShift = () => {
   const navigate = useNavigate()
   const [data, setData] = useState([])
@@ -11,7 +12,7 @@ const AttendanceDayShift = () => {
   const [sortBy, setSortBy] = useState('Date')
   const [searchResults, setSearchResults] = useState([])
   const Getdata = async () => {
-    const res = await axios.get(`https://api.drakon-sports.com/alluser`)
+    const res = await axios.get(`${API_BASE_URL}/alluser`)
     setData(res.data)
     const filteredData = res.data.filter((e) => e.type === "Day")
     filterAndSortResults(searchTerm, sortBy, filteredData)
@@ -19,7 +20,7 @@ const AttendanceDayShift = () => {
   console.log(data)
   const handleDel = async (id) => {
     try {
-      await axios.delete(`https://api.drakon-sports.com/alluser/${id}`)
+      await axios.delete(`${API_BASE_URL}/alluser/${id}`)
       Getdata()
     } catch (error) {
       console.log(error)

@@ -3,6 +3,7 @@ import { CCard, CCardBody, CHeader } from '@coreui/react'
 import axios from 'axios'
 // import { Button } from '@mui/material'
 import { Button, Modal } from 'antd'
+import API_BASE_URL from '../../config/api'
 const ManageCustomer = () => {
   const initialData = [
     {
@@ -69,7 +70,7 @@ const ManageCustomer = () => {
 
   const getData = async () => {
     try {
-      const { data } = await axios.get(`https://api.drakon-sports.com/getclients`)
+      const { data } = await axios.get(`${API_BASE_URL}/getclients`)
       setData(data)
       setFilter(data)
     } catch (error) {
@@ -94,7 +95,7 @@ const ManageCustomer = () => {
 
   async function fetchClient(id) {
     try {
-      const { data } = await axios.get(`https://api.drakon-sports.com/order/${id}`)
+      const { data } = await axios.get(`${API_BASE_URL}/order/${id}`)
       setOrderData(data.order)
     } catch (error) {
       console.log(error)

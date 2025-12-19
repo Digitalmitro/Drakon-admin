@@ -2,6 +2,7 @@ import { CCard, CCardBody, CHeader } from '@coreui/react'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
+import API_BASE_URL from '../../config/api';
 
 const ViewOrder = () => {
   // Sample order data
@@ -19,7 +20,7 @@ const {id} = useParams()
 
   async function getOrderDetails() {
     try {
-        const {data} = await axios.get(`https://api.drakon-sports.com/specific-order/${id}`)
+        const {data} = await axios.get(`${API_BASE_URL}/specific-order/${id}`)
         setOrderDetails(data)
     } catch (error) {
         console.log(error);

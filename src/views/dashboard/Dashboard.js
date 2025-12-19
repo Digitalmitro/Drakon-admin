@@ -56,6 +56,7 @@ import MainChart from './MainChart'
 import { Navigate, useNavigate } from 'react-router-dom'
 import Cookies from 'js-cookie'
 import axios from 'axios'
+import API_BASE_URL from '../../config/api';
 const Dashboard = () => {
   const navigate = useNavigate()
 
@@ -64,7 +65,7 @@ const Dashboard = () => {
   const checkToken = async () => {
     if(token){
     await axios
-      .get(`https://api.drakon-sports.com/check-admin-token`, {
+      .get(`${API_BASE_URL}/check-admin-token`, {
         headers: { token: token },
       })
       .then((res) => {

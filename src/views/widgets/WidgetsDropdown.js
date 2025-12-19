@@ -15,6 +15,7 @@ import { CChartBar, CChartLine } from '@coreui/react-chartjs'
 import CIcon from '@coreui/icons-react'
 import { cilArrowBottom, cilArrowTop, cilOptions } from '@coreui/icons'
 import { useNavigate } from 'react-router-dom'
+import API_BASE_URL from '../../config/api';
 
 const WidgetsDropdown = (props) => {
   const widgetChartRef1 = useRef(null)
@@ -26,13 +27,13 @@ const WidgetsDropdown = (props) => {
   const Getdata = async () => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`https://api.drakon-sports.com/order`)
-      const ress = await axios.get(`https://api.drakon-sports.com/products`)
-      const resss = await axios.get(`https://api.drakon-sports.com/coupon`, {
+      const res = await axios.get(`${API_BASE_URL}/order`)
+      const ress = await axios.get(`${API_BASE_URL}/products`)
+      const resss = await axios.get(`${API_BASE_URL}/coupon`, {
         headers: { token: token },
       })
-      // const ressss = await axios.get(`https://api.drakon-sports.com/allsale`)
-      // const resssss = await axios.get(`https://api.drakon-sports.com/alltransfer`)
+      // const ressss = await axios.get(`${API_BASE_URL}/allsale`)
+      // const resssss = await axios.get(`${API_BASE_URL}/alltransfer`)
 
       setSalesData(res.data) // get sales data
       setProductData(ress.data) // get products data

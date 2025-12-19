@@ -1,16 +1,16 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CCard, CCardHeader, CCardBody, CButton, CForm, CRow, CCol, CFormLabel, CFormInput, CFormSelect, CFormCheck, CTable, CTableHead, CTableRow, CTableHeaderCell, CTableBody, CTableDataCell } from '@coreui/react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { PlusOutlined } from '@ant-design/icons';
 import { Image, Upload } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import Select from 'react-select';
-import API_BASE_URL from '../../config/api';
+import { useNavigate, useParams } from 'react-router-dom';
+import API_BASE_URL from '../../../config/api';
 
-const CreateEmployeeProfile = () => {
+const UpdateProduct = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
 
   const getBase64 = (file) =>
@@ -24,6 +24,7 @@ const CreateEmployeeProfile = () => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState('');
   const [fileList, setFileList] = useState([]);
+  const [load, setLoad] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -38,13 +39,7 @@ const CreateEmployeeProfile = () => {
     soldOutSizes: [],
   });
 
-  const [newSize, setNewSize] = useState({ size: '', upc: '' });
-  
-  // Predefined size options
-  const sizeOptions = ["Youth", "Adult", "YS", "YM", "YL", "YXL", "XXL", "XL", "L", "M", "S", "XS"].map((size) => ({
-    value: size,
-    label: size,
-  }));
+  const [newSize, setNewSize] = useState({ size: '', upc: '', weight: 0 });
 
   const handlePreview = async (file) => {
     if (!file.url && !file.preview) {
@@ -56,35 +51,60 @@ const CreateEmployeeProfile = () => {
 
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
 
-  // Add size from dropdown selection
-  const addSizesFromDropdown = (selectedOptions) => {
-    if (!selectedOptions || selectedOptions.length === 0) return;
-    
-    const newSizes = selectedOptions.map(option => ({
-      size: option.value,
-      upc: ''
-    }));
-    
-    // Filter out duplicates
-    const existingSizeNames = formData.size.map(s => s.size);
-    const uniqueNewSizes = newSizes.filter(ns => !existingSizeNames.includes(ns.size));
-    
-    setFormData({
-      ...formData,
-      size: [...formData.size, ...uniqueNewSizes]
-    });
+  const getData = async () => {
+    try {
+    //   const res = await axios.get(`https://api.drakon-sports.com/feature-products/${id}`);
+      const res = await axios.get(`${API_BASE_URL}/feature-products/${id}`);
+      
+      // Check if size is array of objects or array of strings (migrated data)
+      let sizeData = res.data.size || [];
+      let hasNoSize = res.data.hasNoSize || false;
+      
+      // If size array contains strings, it's old data - convert it
+      if (sizeData.length > 0 && typeof sizeData[0] === 'string') {
+        sizeData = sizeData.map(s => ({
+          size: s,
+          upc: null,
+          weight: res.data.weight || 0
+        }));
+      }
+
+      setFormData({
+        title: res.data.title,
+        description: res.data.description,
+        category: res.data.category,
+        price: res.data.price || 0,
+        stock: res.data.stock || 0,
+        hasNoSize: hasNoSize,
+        size: sizeData,
+        weight: res.data.weight || 0,
+        upc: res.data.upc || '',
+        isSoldOut: res.data.isSoldOut || false,
+        soldOutSizes: res.data.soldOutSizes || [],
+      });
+
+      setLoad(true);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      toast.error('Error loading product');
+      setLoad(true);
+    }
   };
 
+  useEffect(() => {
+    getData();
+  }, [id]);
+
   const addSize = () => {
-    if (!newSize.size) {
-      toast.error('Please enter size name');
+    if (!newSize.size || newSize.weight <= 0) {
+      toast.error('Please enter size name and weight');
       return;
     }
     setFormData({
       ...formData,
       size: [...formData.size, { ...newSize }]
     });
-    setNewSize({ size: '', upc: '' });
+    setNewSize({ size: '', upc: '', weight: 0 });
   };
 
   const removeSize = (index) => {
@@ -92,6 +112,13 @@ const CreateEmployeeProfile = () => {
       ...formData,
       size: formData.size.filter((_, i) => i !== index)
     });
+  };
+
+  const updateSize = (index, field, value) => {
+    const updatedSizes = formData.size.map((s, i) => 
+      i === index ? { ...s, [field]: value } : s
+    );
+    setFormData({ ...formData, size: updatedSizes });
   };
 
   const handleSubmit = async (e) => {
@@ -105,35 +132,39 @@ const CreateEmployeeProfile = () => {
 
     try {
       const payload = {
-        image: fileList.map((file) => file.thumbUrl),
-        ...formData,
+        title: formData.title,
+        price: formData.price,
+        description: formData.description,
+        category: formData.category,
+        stock: formData.stock,
+        hasNoSize: formData.hasNoSize,
+        size: formData.size,
+        weight: formData.weight,
+        upc: formData.upc,
+        isSoldOut: formData.isSoldOut,
+        soldOutSizes: formData.soldOutSizes,
       };
 
-      // const response = await axios.post(`https://api.drakon-sports.com/feature-products`, payload);
-      const response = await axios.post(`${API_BASE_URL}/feature-products`, payload);
+      if (fileList.length > 0) {
+        payload.image = fileList.map((file) => file.thumbUrl);
+      }
+
+      console.log('Update payload:', payload);
+
+      const response = await axios.put(
+        `${API_BASE_URL}/feature-products/${id}`,
+        payload
+      );
+
       console.log(response.data);
-      toast.success('Product created successfully');
+      toast.success('Product updated successfully');
       
-      // Reset form
-      setFormData({
-        title: '',
-        description: '',
-        category: '',
-        price: 0,
-        stock: 0,
-        hasNoSize: false,
-        size: [],
-        weight: 0,
-        upc: '',
-        isSoldOut: false,
-        soldOutSizes: [],
-      });
-      setFileList([]);
-      
-      setTimeout(() => navigate("/product-list"), 1000);
+      setTimeout(() => {
+        navigate("/product-list");
+      }, 1000);
     } catch (error) {
       console.error(error);
-      toast.error('Error creating product');
+      toast.error('Error updating product');
     }
   };
 
@@ -150,12 +181,16 @@ const CreateEmployeeProfile = () => {
     </button>
   );
 
+  if (!load) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <>
       <ToastContainer />
       <CCard className="shadow-sm p-3">
         <CCardHeader className="d-flex justify-content-between bg-primary text-white">
-          <h4 className="fw-bold">Add Product</h4>
+          <h4 className="fw-bold">Update Product</h4>
           <CButton color="info" className="text-white" onClick={() => navigate("/product-list")}>
             Product List
           </CButton>
@@ -241,7 +276,7 @@ const CreateEmployeeProfile = () => {
               </CCol>
             </CRow>
 
-            {/* If hasNoSize - show simple UPC */}
+            {/* If hasNoSize - show simple UPC and Weight */}
             {formData.hasNoSize ? (
               <CRow className="mb-4">
                 <CCol md={6}>
@@ -253,96 +288,61 @@ const CreateEmployeeProfile = () => {
                     onChange={(e) => setFormData({ ...formData, upc: e.target.value })}
                   />
                 </CCol>
+                <CCol md={6}>
+                  <CFormLabel>Weight (oz)</CFormLabel>
+                  <CFormInput
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter weight in ounces"
+                    required
+                    value={formData.weight}
+                    onChange={(e) => setFormData({ ...formData, weight: parseFloat(e.target.value) })}
+                  />
+                </CCol>
               </CRow>
             ) : (
               <>
-                {/* Size Dropdown - Select Multiple Sizes */}
-                <CRow className="mb-4">
-                  <CCol md={12}>
-                    <CFormLabel>Available Sizes (Select from dropdown)</CFormLabel>
-                    <Select
-                      isMulti
-                      name="sizes"
-                      options={sizeOptions}
-                      styles={{
-                        control: (base) => ({
-                          ...base,
-                          backgroundColor: '#212631',
-                          borderColor: '#323a49',
-                          boxShadow: 'none',
-                          '&:hover': {
-                            borderColor: '#323a49',
-                          },
-                        }),
-                        menu: (base) => ({
-                          ...base,
-                          backgroundColor: '#323a49',
-                          color: '#fff',
-                        }),
-                        option: (base, state) => ({
-                          ...base,
-                          backgroundColor: state.isSelected ? '#323a49' : '#212631',
-                          color: state.isSelected ? '#fff' : '#aaa',
-                          '&:hover': {
-                            backgroundColor: '#323a49',
-                            color: '#fff',
-                          },
-                        }),
-                        multiValue: (base) => ({
-                          ...base,
-                          backgroundColor: '#5e5cd0',
-                          color: '#fff',
-                        }),
-                        multiValueLabel: (base) => ({
-                          ...base,
-                          color: '#fff',
-                        }),
-                        multiValueRemove: (base) => ({
-                          ...base,
-                          color: '#fff',
-                          ':hover': {
-                            backgroundColor: 'transparent',
-                            color: '#aaa',
-                          },
-                        }),
-                      }}
-                      onChange={addSizesFromDropdown}
-                      placeholder="Select sizes to add"
-                      className="basic-multi-select"
-                      classNamePrefix="select"
-                    />
-                  </CCol>
-                </CRow>
-
-                {/* Display Added Sizes (Editable) */}
+                {/* Existing Sizes Table (Editable) */}
                 {formData.size.length > 0 && (
                   <CRow className="mb-4">
                     <CCol md={12}>
-                      <h5>Added Sizes (Edit UPC)</h5>
+                      <h5>Existing Sizes (Edit inline)</h5>
                       <CTable striped hover>
                         <CTableHead>
                           <CTableRow>
                             <CTableHeaderCell>Size</CTableHeaderCell>
                             <CTableHeaderCell>UPC</CTableHeaderCell>
+                            <CTableHeaderCell>Weight (oz)</CTableHeaderCell>
                             <CTableHeaderCell>Action</CTableHeaderCell>
                           </CTableRow>
                         </CTableHead>
                         <CTableBody>
                           {formData.size.map((s, index) => (
                             <CTableRow key={index}>
-                              <CTableDataCell>{s.size}</CTableDataCell>
+                              <CTableDataCell>
+                                <CFormInput
+                                  type="text"
+                                  value={s.size}
+                                  onChange={(e) => updateSize(index, 'size', e.target.value)}
+                                  style={{ width: '100px' }}
+                                />
+                              </CTableDataCell>
                               <CTableDataCell>
                                 <CFormInput
                                   type="text"
                                   value={s.upc || ''}
-                                  onChange={(e) => {
-                                    const updatedSizes = formData.size.map((item, i) =>
-                                      i === index ? { ...item, upc: e.target.value } : item
-                                    );
-                                    setFormData({ ...formData, size: updatedSizes });
-                                  }}
+                                  onChange={(e) => updateSize(index, 'upc', e.target.value)}
                                   placeholder="Enter UPC"
                                   style={{ width: '150px' }}
+                                />
+                              </CTableDataCell>
+                              <CTableDataCell>
+                                <CFormInput
+                                  type="number"
+                                  step="0.01"
+                                  value={s.weight}
+                                  onChange={(e) => updateSize(index, 'weight', parseFloat(e.target.value) || 0)}
+                                  style={{ width: '100px' }}
                                 />
                               </CTableDataCell>
                               <CTableDataCell>
@@ -358,15 +358,15 @@ const CreateEmployeeProfile = () => {
                   </CRow>
                 )}
 
-                {/* Size Management */}
+                {/* Add New Size */}
                 <CRow className="mb-3">
                   <CCol md={12}>
-                    <h5>Or Add Custom Size</h5>
+                    <h5>Add New Size</h5>
                   </CCol>
                 </CRow>
 
                 <CRow className="mb-3">
-                  <CCol md={5}>
+                  <CCol md={4}>
                     <CFormLabel>Size</CFormLabel>
                     <CFormInput
                       type="text"
@@ -375,7 +375,7 @@ const CreateEmployeeProfile = () => {
                       onChange={(e) => setNewSize({ ...newSize, size: e.target.value })}
                     />
                   </CCol>
-                  <CCol md={5}>
+                  <CCol md={4}>
                     <CFormLabel>UPC Code</CFormLabel>
                     <CFormInput
                       type="text"
@@ -384,7 +384,17 @@ const CreateEmployeeProfile = () => {
                       onChange={(e) => setNewSize({ ...newSize, upc: e.target.value })}
                     />
                   </CCol>
-                  <CCol md={2} className="d-flex align-items-end">
+                  <CCol md={3}>
+                    <CFormLabel>Weight (oz)</CFormLabel>
+                    <CFormInput
+                      type="number"
+                      step="0.01"
+                      placeholder="Weight"
+                      value={newSize.weight}
+                      onChange={(e) => setNewSize({ ...newSize, weight: parseFloat(e.target.value) || 0 })}
+                    />
+                  </CCol>
+                  <CCol md={1} className="d-flex align-items-end">
                     <CButton color="primary" onClick={addSize}>Add</CButton>
                   </CCol>
                 </CRow>
@@ -434,7 +444,7 @@ const CreateEmployeeProfile = () => {
             <CRow className="mt-4">
               <CCol className="text-center">
                 <CButton type="submit" color="success" size="lg">
-                  Create Product
+                  Update Product
                 </CButton>
               </CCol>
             </CRow>
@@ -445,4 +455,4 @@ const CreateEmployeeProfile = () => {
   );
 };
 
-export default CreateEmployeeProfile;
+export default UpdateProduct;
