@@ -2,7 +2,6 @@ import { CCard, CCardBody, CHeader } from '@coreui/react'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
-import API_BASE_URL from '../../config/api';
 
 const ViewOrder = () => {
   // Sample order data
@@ -20,7 +19,7 @@ const {id} = useParams()
 
   async function getOrderDetails() {
     try {
-        const {data} = await axios.get(`${API_BASE_URL}/specific-order/${id}`)
+        const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_API}/specific-order/${id}`)
         setOrderDetails(data)
     } catch (error) {
         console.log(error);
@@ -32,25 +31,31 @@ const {id} = useParams()
     <CCard>
       <CHeader><h2>View Order</h2></CHeader>
       <CCardBody>
+        <div className="mb-3">
+          <strong>Order ID:</strong> {orderDetails?._id}
+          <div><strong>Purchase Date:</strong> {orderDetails?.orderDate ? new Date(orderDetails.orderDate).toLocaleString() : ''}</div>
+        </div>
         <div className="table-responsive">
           <table className="table table-striped">
             <thead>
               <tr>
-                <th>Order ID</th>
                 <th>Product</th>
+                <th>Size</th>
                 <th>Quantity</th>
-                <th>Price</th>
-                <th>Purchase Date</th>
+                <th>Unit Price</th>
+                <th>Total</th>
               </tr>
             </thead>
             <tbody>
-                <tr key={orderDetails?._id}>
-                  <td>{orderDetails?._id}</td>
-                  <td>{orderDetails?.title}</td>
-                  <td>{orderDetails?.qty}</td>
-                  <td>${orderDetails?.price}</td>
-                  <td>{orderDetails?.createdDate}</td>
+              {orderDetails?.items?.map((it, idx) => (
+                <tr key={idx}>
+                  <td>{it.name}</td>
+                  <td>{it.size || '—'}</td>
+                  <td>{it.quantity}</td>
+                  <td>${(it.unitPrice || 0).toFixed(2)}</td>
+                  <td>${((it.unitPrice || 0) * (it.quantity || 0)).toFixed(2)}</td>
                 </tr>
+              ))}
             </tbody>
           </table>
         </div>

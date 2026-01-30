@@ -215,6 +215,7 @@ const AllOrder = () => {
             <thead>
               <tr>
                 <th scope="col">Product</th>
+                <th scope="col">Size</th>
                 <th scope="col">Quantity</th>
                 <th scope="col">Total</th>
               </tr>
@@ -223,6 +224,7 @@ const AllOrder = () => {
               {selectedUserData?.items?.map((item, index) => (
                 <tr key={index}>
                   <td>{item.name}</td>
+                  <td>{item.size || '—'}</td>
                   <td>{item.quantity}</td>
                   <td>$ {(item.unitPrice * item.quantity).toFixed(2)}</td>
                 </tr>
