@@ -146,7 +146,7 @@ const UpdateProduct = () => {
       };
 
       if (fileList.length > 0) {
-        payload.image = fileList.map((file) => file.thumbUrl);
+        payload.image = fileList.map((file) => file.thumbUrl || file.url);
       }
 
       console.log('Update payload:', payload);

@@ -92,7 +92,7 @@ const UpdateInventory = () => {
 
       }
       if (fileList.length > 0) {
-        payload.image = fileList.map((file) => file.thumbUrl)
+        payload.image = fileList.map((file) => file.thumbUrl || file.url)
       }
       const response = await axios.put(`https://api.drakon-sports.com/feature-products/${id}`, payload);
       console.log("response", response.data); 
