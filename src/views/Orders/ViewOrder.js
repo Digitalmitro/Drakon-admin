@@ -5,13 +5,13 @@ import { useParams } from 'react-router-dom'
 
 const ViewOrder = () => {
   // Sample order data
-//   const orderDetails = [
-//     { id: 1, product: 'Product 1', quantity: 2, price: 20 },
-//     { id: 2, product: 'Product 2', quantity: 1, price: 30 },
-//     { id: 3, product: 'Product 3', quantity: 3, price: 15 },
-//   ]
+  // const orderDetails = [
+  //   { id: 1, product: 'Product 1', quantity: 2, price: 20 },
+  //   { id: 2, product: 'Product 2', quantity: 1, price: 30 },
+  //   { id: 3, product: 'Product 3', quantity: 3, price: 15 },
+  // ]
 
-const {id} = useParams()
+  const { id } = useParams()
   const [orderDetails, setOrderDetails] = useState([])
   useEffect(() => {
     getOrderDetails()
@@ -19,21 +19,26 @@ const {id} = useParams()
 
   async function getOrderDetails() {
     try {
-        const {data} = await axios.get(`${process.env.REACT_APP_BACKEND_API}/specific-order/${id}`)
-        setOrderDetails(data)
+      const { data } = await axios.get(`${process.env.REACT_APP_BACKEND_API}/specific-order/${id}`)
+      setOrderDetails(data)
     } catch (error) {
-        console.log(error);
+      console.log(error)
     }
   }
 
-  console.log(orderDetails);
+  console.log(orderDetails)
   return (
     <CCard>
-      <CHeader><h2>View Order</h2></CHeader>
+      <CHeader>
+        <h2>View Order</h2>
+      </CHeader>
       <CCardBody>
         <div className="mb-3">
           <strong>Order ID:</strong> {orderDetails?._id}
-          <div><strong>Purchase Date:</strong> {orderDetails?.orderDate ? new Date(orderDetails.orderDate).toLocaleString() : ''}</div>
+          <div>
+            <strong>Purchase Date:</strong>
+            {orderDetails?.orderDate ? new Date(orderDetails.orderDate).toLocaleString() : ''}
+          </div>
         </div>
         <div className="table-responsive">
           <table className="table table-striped">

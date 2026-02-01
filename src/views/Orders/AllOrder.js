@@ -6,7 +6,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 import { Modal, Select } from 'antd'
-import API_BASE_URL from '../../config/api';
+import API_BASE_URL from '../../config/api'
 
 const AllOrder = () => {
   const navigate = useNavigate()
@@ -57,7 +57,7 @@ const AllOrder = () => {
 
   const [modalOpen, setModalOpen] = useState(false)
 
-  console.log(data);
+  console.log(data)
 
   return (
     <>
@@ -84,8 +84,7 @@ const AllOrder = () => {
               <tbody>
                 {data?.map((res) => (
                   <tr key={res?._id}>
-                    <td>{res?._id
-                    }</td>
+                    <td>{res?._id}</td>
                     <td
                       onClick={() => {
                         setModalOpen(true)
@@ -121,8 +120,7 @@ const AllOrder = () => {
                     <td>{new Date(res?.createdAt).toLocaleString()}</td>
                     <td>
                       <Select
-                        className={`order-${res?.
-                          orderStatus}`}
+                        className={`order-${res?.orderStatus}`}
                         defaultValue={res?.orderStatus}
                         style={{
                           width: 120,
