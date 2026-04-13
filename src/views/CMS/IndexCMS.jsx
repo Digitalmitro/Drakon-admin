@@ -1,57 +1,118 @@
 import { CCard, CCardBody, CCardHeader } from '@coreui/react'
-import { createTheme } from '@mui/material/styles';
-
 import { Button, TextField } from '@mui/material'
 import { message } from 'antd'
+import React, { useEffect, useMemo, useState } from 'react'
+import { deleteCms, getFirstCmsEntry, patchCms, upsertCms } from '../../services/cmsService'
+import { getAdminId } from '../../utils/adminIdentity'
 
-import axios from 'axios'
-import React, { useState } from 'react'
+const defaultIndexCms = {
+  script: { src: '', type: '', async: '', defer: '', integrity: '', crossorigin: '' },
+  link: {
+    href: '',
+    rel: '',
+    type: '',
+    media: '',
+    sizes: '',
+    crossorigin: '',
+    as: '',
+    integrity: '',
+    title: '',
+    hreflang: '',
+  },
+  meta: { name: '', content: '', charset: '', httpEquiv: '' },
+  title: '',
+}
 
 const IndexCMS = () => {
-  const user = localStorage.getItem('user')
-  const user_id = JSON.parse(user)._id
-  const [index, setIndex] = useState({
-    script: { src: '', type: '', async: '', defer: '', integrity: '', crossorigin: '' },
-    link: {
-      href: '',
-      rel: '',
-      type: '',
-      media: '',
-      sizes: '',
-      crossorigin: '',
-      as: '',
-      integrity: '',
-      title: '',
-      hreflang: '',
-    },
-    meta: { name: '', content: '', charset: '', 'http-equiv': '' },
-    title: '',
-  })
+  const user_id = useMemo(() => getAdminId(), [])
+  const [index, setIndex] = useState(defaultIndexCms)
+  const [existingId, setExistingId] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  const loadIndexCms = async () => {
+    setLoading(true)
+    try {
+      const entry = await getFirstCmsEntry('index')
+      if (!entry) {
+        setExistingId('')
+        setIndex(defaultIndexCms)
+        return
+      }
+
+      setExistingId(entry._id)
+      setIndex({
+        script: { ...defaultIndexCms.script, ...entry.script },
+        link: { ...defaultIndexCms.link, ...entry.link },
+        meta: { ...defaultIndexCms.meta, ...entry.meta },
+        title: entry.title || '',
+      })
+    } catch (error) {
+      message.error(error?.response?.data?.message || 'Failed to load Index CMS')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    loadIndexCms()
+  }, [])
+
   function handleChange(e) {
-    const { name, value } = e.target;
-    const field = name.split('-')[0]; // Extracting the field name from input name
-    const property = name.split('-')[1]; // Extracting the property name from input name
-    setIndex(prevState => ({
+    const { name, value } = e.target
+    const [field, property] = name.split('-')
+    setIndex((prevState) => ({
       ...prevState,
       [field]: {
         ...prevState[field],
-        [property]: value
-      }
-    }));
+        [property]: value,
+      },
+    }))
   }
+
   async function addIndex() {
+    if (!user_id) {
+      message.error('No admin user found. Please login again.')
+      return
+    }
+
+    setSaving(true)
     try {
-      const { data } = await axios.post(`https://api.drakon-sports.com/index`, {
-        ...index,
-        user_id,
-      })
-      console.log(data)
-      message.success(data)
+      const payload = { ...index, user_id }
+      if (existingId) {
+        await patchCms('index', existingId, payload)
+        message.success('Index CMS updated successfully')
+      } else {
+        const result = await upsertCms('index', payload)
+        message.success(result?.message || 'Index CMS created successfully')
+      }
+      await loadIndexCms()
     } catch (error) {
-      console.log(error)
+      message.error(error?.response?.data?.message || 'Failed to save Index CMS')
+    } finally {
+      setSaving(false)
     }
   }
-  console.log(index);
+
+  const handleDelete = async () => {
+    if (!existingId) {
+      message.warning('No Index CMS entry found to delete')
+      return
+    }
+
+    setSaving(true)
+    try {
+      await deleteCms('index', existingId)
+      message.success('Index CMS deleted successfully')
+      setExistingId('')
+      setIndex(defaultIndexCms)
+    } catch (error) {
+      message.error(error?.response?.data?.message || 'Failed to delete Index CMS')
+    } finally {
+      setSaving(false)
+    }
+  }
+
   return (
     <div>
       <CCard>
@@ -94,18 +155,32 @@ const IndexCMS = () => {
                 <TextField variant="standard" label="name" name="meta-name" onChange={handleChange} value={index.meta.name} />
                 <TextField variant="standard" label="content" name="meta-content" onChange={handleChange} value={index.meta.content} />
                 <TextField variant="standard" label="charset" name="meta-charset" onChange={handleChange} value={index.meta.charset} />
-                <TextField variant="standard" label="http-equiv" name="meta-httpEquiv" onChange={handleChange} value={index.meta['httpEquiv']} />
+                <TextField variant="standard" label="http-equiv" name="meta-httpEquiv" onChange={handleChange} value={index.meta.httpEquiv} />
               </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <h4 htmlFor="" style={{ marginBottom: '10px' }}>
                 Title
               </h4>
-              <TextField variant="standard" label="title" onChange={(e) => setIndex({...index, title: e.target.value})} value={index.title} />
+              <TextField variant="standard" label="title" onChange={(e) => setIndex({ ...index, title: e.target.value })} value={index.title} />
             </div>
-            <Button onClick={addIndex} sx={{ width: '150px' }} variant="contained">
-              Update index
-            </Button>
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <Button onClick={addIndex} sx={{ width: '170px' }} variant="contained" disabled={saving || loading}>
+                {saving ? 'Saving...' : existingId ? 'Update Index' : 'Create Index'}
+              </Button>
+              <Button onClick={loadIndexCms} sx={{ width: '120px' }} variant="outlined" disabled={saving}>
+                Refresh
+              </Button>
+              <Button
+                onClick={handleDelete}
+                sx={{ width: '120px' }}
+                variant="outlined"
+                color="error"
+                disabled={saving || !existingId}
+              >
+                Delete
+              </Button>
+            </div>
           </div>
         </CCardBody>
       </CCard>
